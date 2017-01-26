@@ -50,6 +50,8 @@ class LoginViewController: UIViewController {
             debugTextLabel.text = "Email or Password Empty."
         } else {
             setUIEnabled(false)
+            
+            getSessionID(appDelegate.sessionID!)
         }
         
     }
@@ -122,8 +124,10 @@ class LoginViewController: UIViewController {
             }
             
             self.appDelegate.userKey = userKey
-            
+            self.completeLogin()
         }
+        
+        task.resume()
         
     }
     
