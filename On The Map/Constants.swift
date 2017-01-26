@@ -23,10 +23,12 @@ struct Constants {
         static let ApiHost = "parse.udacity.com"
         static let ApiPath = "/parse/classes"
         static let signUp = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"
+        static let authMe = "https://www.udacity.com/api/session"
         
     }
     
     struct OTMParameterKeys {
+        
         static let createdAt = "createdAt"
         static let firstName = "firstName"
         static let lastName = "lastName"
@@ -35,18 +37,9 @@ struct Constants {
         static let mapString = "mapString"
         static let mediaURL = "mediaURL"
         static let objectID = "objectId"
-        static let uniqueKey = "uniqueKey"
         static let updatedAt = "updatedAt"
         
-        static let ApiKey = "api_key"
-        static let SessionID = "session_id"
-        static let RequestToken = "request_token"
-        static let Query = "query"
-
-    }
-    
-    struct URLKeys {
-        static let UserID = "id"
+        static let SessionID = "id"
     }
     
     struct JSONResponseKeys {
@@ -58,6 +51,9 @@ struct Constants {
         // MARK: Authorization
         static let RequestToken = "request_token"
         static let SessionID = "session_id"
+        
+        static let userKey = "key"
+        static let registered = "registered"
     
     struct Methods {
         
