@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A9430441E3A78A1006635DB /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430431E3A78A1006635DB /* Client.swift */; };
+		4A9430461E3AC8A5006635DB /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430451E3AC8A5006635DB /* Convenience.swift */; };
 		4AA141BE1E330A1600E2F997 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141BD1E330A1600E2F997 /* AppDelegate.swift */; };
 		4AA141C01E330A1600E2F997 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141BF1E330A1600E2F997 /* LoginViewController.swift */; };
 		4AA141C31E330A1600E2F997 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AA141C11E330A1600E2F997 /* Main.storyboard */; };
@@ -38,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A9430431E3A78A1006635DB /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		4A9430451E3AC8A5006635DB /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 		4AA141BA1E330A1600E2F997 /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AA141BD1E330A1600E2F997 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AA141BF1E330A1600E2F997 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 			children = (
 				4AA141BD1E330A1600E2F997 /* AppDelegate.swift */,
 				4AA141F51E36F86300E2F997 /* GCDBlackBox.swift */,
+				4A9430451E3AC8A5006635DB /* Convenience.swift */,
+				4A9430431E3A78A1006635DB /* Client.swift */,
 				4AA141F31E36D12900E2F997 /* Constants.swift */,
 				4AA141EC1E33126300E2F997 /* View Controllers */,
 				4AA141ED1E33128600E2F997 /* Assets */,
@@ -299,6 +305,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AA141F41E36D12900E2F997 /* Constants.swift in Sources */,
+				4A9430461E3AC8A5006635DB /* Convenience.swift in Sources */,
+				4A9430441E3A78A1006635DB /* Client.swift in Sources */,
 				4AA141C01E330A1600E2F997 /* LoginViewController.swift in Sources */,
 				4AA141F01E36B20000E2F997 /* MapViewController.swift in Sources */,
 				4AA141F21E36B6C800E2F997 /* ListViewController.swift in Sources */,
@@ -554,6 +562,7 @@
 				4AA141E41E330A1600E2F997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4AA141E51E330A1600E2F997 /* Build configuration list for PBXNativeTarget "On The MapTests" */ = {
 			isa = XCConfigurationList;
@@ -562,6 +571,7 @@
 				4AA141E71E330A1600E2F997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4AA141E81E330A1600E2F997 /* Build configuration list for PBXNativeTarget "On The MapUITests" */ = {
 			isa = XCConfigurationList;
@@ -570,6 +580,7 @@
 				4AA141EA1E330A1600E2F997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
