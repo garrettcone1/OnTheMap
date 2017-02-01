@@ -59,7 +59,7 @@ class Client: NSObject {
                 return
             }
             
-            // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity
+            // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
             let range = Range(uncheckedBounds: (5, data.count - 5))
             let newData = data.subdata(in: range)
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
@@ -69,6 +69,41 @@ class Client: NSObject {
         task.resume()
         return task
         
+    }
+    
+    func taskForUdacityGETMethod(_ method: String, _ userID: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    
+        let urlString = Constants.OTM.UdacityBaseURL + method + "/" + userID
+        let url = URL(string: urlString)
+        
+        let request = NSMutableURLRequest(url: url!)
+        
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+        
+            guard (error == nil) else {
+                print("There was an error with your Udacity POST request: \(error)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+            
+            // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
+            let range = Range(uncheckedBounds: (5, data.count - 5))
+            let newData = data.subdata(in: range)
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
+            
+
+        }
+        task.resume()
+        return task
     }
     
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {

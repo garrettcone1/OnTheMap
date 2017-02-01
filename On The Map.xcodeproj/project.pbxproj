@@ -152,9 +152,9 @@
 		4AA141ED1E33128600E2F997 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				4AA141C61E330A1600E2F997 /* LaunchScreen.storyboard */,
-				4AA141C41E330A1600E2F997 /* Assets.xcassets */,
 				4AA141C11E330A1600E2F997 /* Main.storyboard */,
+				4AA141C41E330A1600E2F997 /* Assets.xcassets */,
+				4AA141C61E330A1600E2F997 /* LaunchScreen.storyboard */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
