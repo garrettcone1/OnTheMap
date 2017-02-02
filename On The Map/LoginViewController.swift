@@ -53,12 +53,19 @@ class LoginViewController: UIViewController {
         } else {
             setUIEnabled(false)
             
-            Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!) { (success, sessionID, userID, errorString) in
+            Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success,/* sessionID, userID,*/ errorString) in
                 
                 // Make sure this first func "performUIUpdatesOnMain" is in the right place.
                 performUIUpdatesOnMain {
                     if success {
                         
+                        print("Successful Authentication")
+                        self.completeLogin()
+                        
+                            
+                        
+                        
+                        /*
                         if let sessionID = sessionID {
                             print("Successful login for Session \(sessionID)")
                             Client.sharedInstance().sessionID = sessionID
@@ -76,10 +83,11 @@ class LoginViewController: UIViewController {
                             }
                         
                             self.completeLogin()
-                        }
+                        }*/
                     
                     } else {
-                    
+                        self.errorAlert(errorString!)
+                        /*
                         if let error = errorString {
                             if error.localizedDescription.contains("The Internet connection appears to be offline") {
                                 self.errorMessage = "The internet connection appears to be offline"
@@ -88,18 +96,12 @@ class LoginViewController: UIViewController {
                             print("Login failed: no sessionID or error was returned")
                             self.errorMessage = "Invalid login or password"
                             self.debugTextLabel.text = "Invalid login or password"
-                        }
+                        } */
                         
-                        let alert = UIAlertController(title: nil, message: self.errorMessage, preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
                     }
                 }
-                
             }
-            
         }
-        
     }
     
     private func completeLogin() {
@@ -116,6 +118,12 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     // MARK: UITextFieldDelegate
+    
+    func errorAlert(_ errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

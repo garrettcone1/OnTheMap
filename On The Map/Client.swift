@@ -32,6 +32,8 @@ class Client: NSObject {
     
     func taskForUdacityPOSTMethod(_ method: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
+        
+        
         // Build the URL, Configure the request
         let urlString = Constants.OTM.UdacityBaseURL + method
         let url = URL(string: urlString)
@@ -40,7 +42,10 @@ class Client: NSObject {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"\"udacity\": {\"username\": \"\(Constants.JSONBodyKeys.username)\", \"password\": \"\(Constants.JSONBodyKeys.password)\"}}".data(using: String.Encoding.utf8)
+        //request.httpBody = "{\"\"udacity\": {\"username\": \"*\", \"password\": \"*\"}}".data(using: String.Encoding.utf8)
+        do {
+            request.httpBody = try! JSONSerialization.data(withJSONObject: jsonBody, options: .prettyPrinted)
+        }
         
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -58,10 +63,16 @@ class Client: NSObject {
                 print("No data was returned by the request!")
                 return
             }
-            
+ 
             // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
             let range = Range(uncheckedBounds: (5, data.count - 5))
             let newData = data.subdata(in: range)
+            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
+            
+            
+            print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
+            print(NSString(data: data, encoding: String.Encoding.utf8.rawValue)!)
+            
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
             
         }
