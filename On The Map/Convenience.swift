@@ -24,14 +24,17 @@ extension Client {
     
     func postSessionID(_ username: String?, _ password: String?, completionHandler: @escaping (_ succes: Bool, _ errorString: String?) -> Void) {
         
-        let jsonBody: [String: [String: AnyObject]] = ["udacity" : [
+        let jsonBody: [String: [String: AnyObject]] = [Constants.JSONBodyKeys.udacity : [
             Constants.JSONBodyKeys.username: username as AnyObject,
             Constants.JSONBodyKeys.password: password as AnyObject
             ]]
         
-        let _ = taskForUdacityPOSTMethod(Constants.Methods.Session, jsonBody: jsonBody as [String : AnyObject]) { (JSONResult, error) in
+        let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Session
+        
+        let _ = taskForUdacityPOSTMethod(url, jsonBody: jsonBody as [String : AnyObject]) { (JSONResult, error) in
             
             if let error = error {
+                
                 completionHandler(false, error.domain)
             } else {
                 
@@ -58,8 +61,7 @@ extension Client {
                     return
                 }
                 print("Passed account key: \(key)")
-                print("Passed all steps")
-
+                
                 completionHandler(true, nil)
                 
             }
@@ -70,7 +72,7 @@ extension Client {
     
     func getUdacityStudentName(_ userID: String, completionHandlerForGET: @escaping (_ success: Bool, _ firstName: String?, _ lastName: String?, _ errorString: NSError?) -> Void) {
         
-        let _ = taskForUdacityGETMethod(Constants.Methods.Users, Client.sharedInstance().userID!) { (JSONResult, error) in
+        let _ = taskForUdacityGETMethod(Constants.Methods.Users, StudentLocation.sharedInstance.userID!) { (JSONResult, error) in
             
             if let error = error {
                 

@@ -20,6 +20,7 @@
 		4AA141F21E36B6C800E2F997 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141F11E36B6C800E2F997 /* ListViewController.swift */; };
 		4AA141F41E36D12900E2F997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141F31E36D12900E2F997 /* Constants.swift */; };
 		4AA141F61E36F86300E2F997 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141F51E36F86300E2F997 /* GCDBlackBox.swift */; };
+		4ABF8FC11E4446C00020E65C /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABF8FC01E4446C00020E65C /* StudentLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		4AA141F11E36B6C800E2F997 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		4AA141F31E36D12900E2F997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4AA141F51E36F86300E2F997 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		4ABF8FC01E4446C00020E65C /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				4A9430451E3AC8A5006635DB /* Convenience.swift */,
 				4A9430431E3A78A1006635DB /* Client.swift */,
 				4AA141F31E36D12900E2F997 /* Constants.swift */,
+				4ABF8FC01E4446C00020E65C /* StudentLocation.swift */,
 				4AA141EC1E33126300E2F997 /* View Controllers */,
 				4AA141ED1E33128600E2F997 /* Assets */,
 				4AA141EE1E3312B700E2F997 /* Supporting Files */,
@@ -304,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ABF8FC11E4446C00020E65C /* StudentLocation.swift in Sources */,
 				4AA141F41E36D12900E2F997 /* Constants.swift in Sources */,
 				4A9430461E3AC8A5006635DB /* Convenience.swift in Sources */,
 				4A9430441E3A78A1006635DB /* Client.swift in Sources */,

@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
         } else {
             setUIEnabled(false)
             
-            Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success,/* sessionID, userID,*/ errorString) in
+            Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
                 // Make sure this first func "performUIUpdatesOnMain" is in the right place.
                 performUIUpdatesOnMain {
@@ -61,42 +61,8 @@ class LoginViewController: UIViewController {
                         
                         print("Successful Authentication")
                         self.completeLogin()
-                        
-                            
-                        
-                        
-                        /*
-                        if let sessionID = sessionID {
-                            print("Successful login for Session \(sessionID)")
-                            Client.sharedInstance().sessionID = sessionID
-                            Client.sharedInstance().userID = userID
-                            
-                            Client.sharedInstance().getUdacityStudentName(userID!) { (success, firstName, lastName, error) -> Void in
-                                
-                                if let error = error {
-                                    print("Error retrieving student name from Udacity: \(error)")
-                                    
-                                } else {
-                                    Client.sharedInstance().firstName = firstName
-                                    Client.sharedInstance().lastName = lastName
-                                }
-                            }
-                        
-                            self.completeLogin()
-                        }*/
-                    
                     } else {
                         self.errorAlert(errorString!)
-                        /*
-                        if let error = errorString {
-                            if error.localizedDescription.contains("The Internet connection appears to be offline") {
-                                self.errorMessage = "The internet connection appears to be offline"
-                            }
-                        } else {
-                            print("Login failed: no sessionID or error was returned")
-                            self.errorMessage = "Invalid login or password"
-                            self.debugTextLabel.text = "Invalid login or password"
-                        } */
                         
                     }
                 }

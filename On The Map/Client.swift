@@ -11,31 +11,18 @@ import UIKit
 
 class Client: NSObject {
     
-    // PROPERTIES
-    
     // Shared Session
     var session = URLSession.shared
     
-    // Authentication
-    var sessionID: String? = nil
-    var userID: String? = nil
-    var objectID: String? = nil
-    
-    // Student Info
-    var firstName: String? = nil
-    var lastName: String? = nil
     
     // Initializer
     override init() {
         super.init()
     }
     
-    func taskForUdacityPOSTMethod(_ method: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-        
-        
+    func taskForUdacityPOSTMethod(_ urlString: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         // Build the URL, Configure the request
-        let urlString = Constants.OTM.UdacityBaseURL + method
         let url = URL(string: urlString)
         
         let request = NSMutableURLRequest(url: url!)
@@ -119,7 +106,7 @@ class Client: NSObject {
     
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
-        var parsedResult: AnyObject? = nil
+        var parsedResult: AnyObject!
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
