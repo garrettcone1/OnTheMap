@@ -20,7 +20,7 @@ class Client: NSObject {
         super.init()
     }
     
-    func taskForUdacityPOSTMethod(_ urlString: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForUdacityPOSTMethod(_ urlString: String, parameters: [String: [String: AnyObject]], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         // Build the URL, Configure the request
         let url = URL(string: urlString)
@@ -29,10 +29,11 @@ class Client: NSObject {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.httpBody = "{\"\"udacity\": {\"username\": \"*\", \"password\": \"*\"}}".data(using: String.Encoding.utf8)
+        //request.httpBody = "{\"\"\(Constants.JSONBodyKeys.udacity)\": {\"\(Constants.JSONBodyKeys.username)\": \"*\", \"\(Constants.JSONBodyKeys.password)\": \"*\"}}".data(using: String.Encoding.utf8)
         do {
-            request.httpBody = try! JSONSerialization.data(withJSONObject: jsonBody, options: .prettyPrinted)
+            request.httpBody = try! JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         }
+        //request.httpBody = jsonBody.data(using: String.Encoding.utf8)
         
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -52,13 +53,14 @@ class Client: NSObject {
             }
  
             // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
+            //let range = Range(uncheckedBounds: (5, data.count - 5))
+            //let newData = data.subdata(in: range)
+            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
             let range = Range(uncheckedBounds: (5, data.count - 5))
             let newData = data.subdata(in: range)
-            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
-            
             
             print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
-            print(NSString(data: data, encoding: String.Encoding.utf8.rawValue)!)
+            //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue)!)
             
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
             

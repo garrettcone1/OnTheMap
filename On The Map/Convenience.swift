@@ -24,14 +24,16 @@ extension Client {
     
     func postSessionID(_ username: String?, _ password: String?, completionHandler: @escaping (_ succes: Bool, _ errorString: String?) -> Void) {
         
-        let jsonBody: [String: [String: AnyObject]] = [Constants.JSONBodyKeys.udacity : [
+        let parameters: [String: [String: AnyObject]] = [Constants.JSONBodyKeys.udacity : [
             Constants.JSONBodyKeys.username: username as AnyObject,
             Constants.JSONBodyKeys.password: password as AnyObject
             ]]
         
         let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Session
         
-        let _ = taskForUdacityPOSTMethod(url, jsonBody: jsonBody as [String : AnyObject]) { (JSONResult, error) in
+        //let jsonBody = "{\"\"\(Constants.JSONBodyKeys.udacity)\": {\"\(Constants.JSONBodyKeys.username)\": \"\(username)\", \"\(Constants.JSONBodyKeys.password)\": \"\(password)\"}}"
+        
+        let _ = taskForUdacityPOSTMethod(url, parameters: parameters as [String: [String : AnyObject]]) { (JSONResult, error) in
             
             if let error = error {
                 
