@@ -79,7 +79,7 @@ extension Client {
             Constants.OTMParameterKeys.skip: 400 as AnyObject,
             Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
         ]
-        
+ 
         let method = Constants.Methods.Location
         let _ = taskForParseGETMethod(method, parameters: parameters) { (JSONResult, error) in
             
