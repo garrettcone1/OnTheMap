@@ -53,14 +53,9 @@ class Client: NSObject {
             }
  
             // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
-            //let range = Range(uncheckedBounds: (5, data.count - 5))
-            //let newData = data.subdata(in: range)
-            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
-            let range = Range(uncheckedBounds: (5, data.count - 5))
+            let range = Range(uncheckedBounds: (5, data.count))
             let newData = data.subdata(in: range)
-            
             print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
-            //print(NSString(data: data, encoding: String.Encoding.utf8.rawValue)!)
             
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
             
@@ -96,7 +91,7 @@ class Client: NSObject {
             }
             
             // Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
-            let range = Range(uncheckedBounds: (5, data.count - 5))
+            let range = Range(uncheckedBounds: (5, data.count))
             let newData = data.subdata(in: range)
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
             
@@ -104,6 +99,90 @@ class Client: NSObject {
         }
         task.resume()
         return task
+    }
+    
+    func taskForDELETEMethod(_ urlString: String, completionHandlerForDELETE: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        
+        let urlString = urlString
+        let url = URL(string: urlString)!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" {
+                xsrfCookie = cookie
+            }
+        }
+        
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+        
+            guard (error == nil) else {
+                print("There was an error with your DELETE request: \(error)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+            
+            let range = Range(uncheckedBounds: (5, data.count))
+            let newData = data.subdata(in: range)
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForDELETE)
+            
+        }
+        task.resume()
+        return task
+        
+    }
+    
+    func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        
+        let urlString = Constants.OTM.ParseBaseURL + method
+        let url = URL(string: urlString)!
+        let request = NSMutableURLRequest(url: url)
+        request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
+        request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
+        
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+        
+            guard (error == nil) else {
+                print("There was an error with your Udacity POST request: \(error)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!: \(response)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+            
+            self.parseJSONWithCompletionHandler(data, completionHandlerForParseData: completionHandlerForGET)
+            /* Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
+            let range = Range(uncheckedBounds: (5, data.count))
+            let newData = data.subdata(in: range)
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
+            */
+        }
+        task.resume()
+        return task
+        
     }
     
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
@@ -117,6 +196,35 @@ class Client: NSObject {
         }
         
         completionHandlerForConvertData(parsedResult, nil)
+    }
+    
+    private func parseJSONWithCompletionHandler(_ data: Data, completionHandlerForParseData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+        
+        var parsedResult: AnyObject!
+        do {
+            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+        } catch {
+            let userInfo = [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]
+            completionHandlerForParseData(nil, NSError(domain: "parseJSONWithCompletionHandler", code: 1, userInfo: userInfo))
+        }
+        
+        completionHandlerForParseData(parsedResult, nil)
+    }
+    
+    class func escapedParameters(_ parameters: [String: AnyObject]) -> String {
+        
+        var urlVariables = [String]()
+        
+        for (key, value) in parameters {
+            
+            let stringValue = "\(value)"
+            
+            let escapedValue = stringValue.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+            
+            urlVariables += [key + "=" + "\(escapedValue!)"]
+            
+        }
+        return (!urlVariables.isEmpty ? "?" : "") + urlVariables.joined(separator: "&")
     }
     
     class func sharedInstance() -> Client {

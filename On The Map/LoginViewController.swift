@@ -22,7 +22,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var debugTextLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -49,13 +48,12 @@ class LoginViewController: UIViewController {
         
         
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            debugTextLabel.text = "Email or Password is Empty."
+            self.errorAlert("Email or Password is Empty")
         } else {
             setUIEnabled(false)
             
             Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
-                // Make sure this first func "performUIUpdatesOnMain" is in the right place.
                 performUIUpdatesOnMain {
                     if success {
                         
@@ -72,12 +70,26 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         performUIUpdatesOnMain {
-            self.debugTextLabel.text = ""
             self.setUIEnabled(true)
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
             self.present(controller, animated: true, completion: nil)
         }
     }
+    
+    
+    @IBAction func signUpButton(_ sender: Any) {
+        
+        let url = URL(string: Constants.OTM.signUpURL)
+        UIApplication.shared.open(url!, options: [:]) { (success) in
+            
+            if success {
+                print("SignUp page loaded")
+            } else {
+                print("SignUp page failed")
+            }
+        }
+    }
+    
     
 }
 
@@ -135,8 +147,6 @@ private extension LoginViewController {
         emailTextField.isEnabled = enabled
         passwordTextField.isEnabled = enabled
         loginButton.isEnabled = enabled
-        debugTextLabel.text = ""
-        debugTextLabel.isEnabled = enabled
         
         // adjust login button alpha
         if enabled {

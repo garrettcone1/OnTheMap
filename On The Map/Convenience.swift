@@ -72,6 +72,47 @@ extension Client {
         
     }
     
+    func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
+        
+        let parameters: [String: AnyObject] = [
+            Constants.OTMParameterKeys.limit: 100 as AnyObject,
+            Constants.OTMParameterKeys.skip: 400 as AnyObject,
+            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
+        ]
+        
+        let method = Constants.Methods.Location
+        let _ = taskForParseGETMethod(method, parameters: parameters) { (JSONResult, error) in
+            
+            if let error = error {
+                print(error)
+                completionHandler(nil, "Could not get student locations")
+            } else {
+                // Return the locations result, otherwise let us know that there were no results in the output
+                if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
+                    StudentLocation.sharedInstance.studentLocationList = StudentLocation.locationsFromResults(locations)
+                    completionHandler(StudentLocation.sharedInstance.studentLocationList, nil)
+                } else {
+                    completionHandler(nil, "JSONResult was empty")
+                }
+            }
+        }
+    }
+    
+    func goLogout(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+        
+        let url = Constants.OTM.logOutBaseURL + Constants.Methods.ToDelete
+        let _ = taskForDELETEMethod(url) { (JSONResult, error) in
+        
+            if let error = error {
+                print(error)
+                completionHandler(false, "Logout Failed")
+            } else {
+                print("Log Out Successful")
+                completionHandler(true, nil)
+            }
+        }
+    }
+    
     func getUdacityStudentName(_ userID: String, completionHandlerForGET: @escaping (_ success: Bool, _ firstName: String?, _ lastName: String?, _ errorString: NSError?) -> Void) {
         
         let _ = taskForUdacityGETMethod(Constants.Methods.Users, StudentLocation.sharedInstance.userID!) { (JSONResult, error) in

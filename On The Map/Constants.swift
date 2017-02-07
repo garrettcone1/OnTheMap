@@ -23,8 +23,10 @@ struct Constants {
         static let FacebookAppID = "365362206864879"
         
         // URLs
-        static let ParseBaseURL = "https://parse.udacity.com/parse/classes"
+        static let ParseBaseURL = "https://parse.udacity.com/parse/classes/"
         static let UdacityBaseURL = "https://www.udacity.com/api/"
+        static let logOutBaseURL = "https://www.udacity.com/api/"
+        static let signUpURL = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"
     }
     
     struct Methods {
@@ -34,6 +36,8 @@ struct Constants {
         
         // Udacity Authentication
         static let Session = "session"
+        
+        static let ToDelete = "session"
         
         // Users
         static let Users = "users"
