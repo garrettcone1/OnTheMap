@@ -11,19 +11,19 @@ import MapKit
 
 struct StudentLocation {
     
-    var createdAt: String? = nil
-    var firstName: String? = nil
-    var lastName: String? = nil
+    var createdAt: String?
+    var firstName: String?
+    var lastName: String?
     
     var latitude: Double?
     var longitude: Double?
     
-    var mapString: String? = nil
-    var mediaURL: String? = nil
-    var objectId: String? = nil
-    var uniqueKey: String? = nil
-    var userID: String? = nil
-    var updatedAt: String? = nil
+    var mapString: String?
+    var mediaURL: String?
+    var objectId: String?
+    var uniqueKey: String?
+    var updatedAt: String? //= nil
+    
     
     static var sharedInstance = StudentLocation()
     var studentLocationList = [StudentLocation]()
@@ -40,9 +40,12 @@ struct StudentLocation {
         mediaURL = ""
         objectId = ""
         uniqueKey = ""
-        userID = ""
         updatedAt = ""
     }
+    
+    // != nil ? dictionary[Constants.JSONResponseKeys.CreatedAt] as? String: ""
+    // != nil ? dictionary[Constants.JSONResponseKeys.latitude] as? Double: 0
+    
     init(dictionary: [String : AnyObject]) {
         createdAt = dictionary[Constants.JSONResponseKeys.CreatedAt] as? String
         firstName = dictionary[Constants.JSONResponseKeys.FirstName] as? String
@@ -55,12 +58,16 @@ struct StudentLocation {
         mediaURL  = dictionary[Constants.JSONResponseKeys.mediaURL] as? String
         objectId  = dictionary[Constants.JSONResponseKeys.objectID] as? String
         uniqueKey = dictionary[Constants.JSONResponseKeys.uniqueKey] as? String
-        userID = dictionary[Constants.JSONResponseKeys.UserID] as? String
         updatedAt = dictionary[Constants.JSONResponseKeys.updatedAt] as? String
+        
+        
+        
+        
     }
     
     // Convert an array of dictionaries to an array of student information struct objects
     static func locationsFromResults(_ results: [[String : AnyObject]]) -> [StudentLocation] {
+        
         var locations = [StudentLocation]()
         
         for result in results {

@@ -75,9 +75,9 @@ extension Client {
     func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
         
         let parameters: [String: AnyObject] = [
-            Constants.OTMParameterKeys.limit: 100 as AnyObject,
+            Constants.OTMParameterKeys.limit: 100 as AnyObject /*,
             Constants.OTMParameterKeys.skip: 400 as AnyObject,
-            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
+            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject */
         ]
  
         let method = Constants.Methods.Location
@@ -112,7 +112,7 @@ extension Client {
             }
         }
     }
-    
+    /*
     func getUdacityStudentName(_ userID: String, completionHandlerForGET: @escaping (_ success: Bool, _ firstName: String?, _ lastName: String?, _ errorString: NSError?) -> Void) {
         
         let _ = taskForUdacityGETMethod(Constants.Methods.Users, StudentLocation.sharedInstance.userID!) { (JSONResult, error) in
@@ -140,7 +140,7 @@ extension Client {
                 completionHandlerForGET(true, userFirstName, userLastName, nil)
             }
         }
-    }
+    }*/
  
         
 }

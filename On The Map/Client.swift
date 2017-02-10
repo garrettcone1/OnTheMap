@@ -29,11 +29,11 @@ class Client: NSObject {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.httpBody = "{\"\"\(Constants.JSONBodyKeys.udacity)\": {\"\(Constants.JSONBodyKeys.username)\": \"*\", \"\(Constants.JSONBodyKeys.password)\": \"*\"}}".data(using: String.Encoding.utf8)
+        
         do {
             request.httpBody = try! JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         }
-        //request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        
         
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -150,7 +150,8 @@ class Client: NSObject {
     
     func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
-        let urlString = Constants.OTM.ParseBaseURL + method
+        let urlString = Constants.OTM.ParseBaseURL + method + Client.escapedParameters(parameters)
+        print(urlString)
         let url = URL(string: urlString)!
         let request = NSMutableURLRequest(url: url)
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)

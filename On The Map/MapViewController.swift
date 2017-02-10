@@ -12,7 +12,6 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
-    
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
@@ -21,18 +20,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getMapLocations()
     }
     
-    
     @IBAction func logOutButton(_ sender: Any) {
         
         Client.sharedInstance().goLogout() { (success, errorString) in
-            
-            if (success) {
-                performUIUpdatesOnMain {
+            performUIUpdatesOnMain {
+                
+                if (success) {
                     self.dismiss(animated: false, completion: nil)
+                
+                } else {
+                    print("Log Out Failed")
+                    self.errorAlert("Log Out Failed")
                 }
-            } else {
-                print("Log Out Failed")
-                self.errorAlert("Log Out Failed")
             }
         }
     }
@@ -40,16 +39,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func getMapLocations() {
         
         Client.sharedInstance().getStudentLocations() { (results, errorString) in
-        
-            if (results != nil) {
-                performUIUpdatesOnMain {
+            
+            performUIUpdatesOnMain {
+                if (results != nil) {
+                
                     print("Success! Dowloaded Student Locations")
                     self.setMapLocations()
                     
+                } else {
+                    print("Could not get student locations")
+                    self.errorAlert("Could not get student locations")
                 }
-            } else {
-                print("Could not get student locations")
-                self.errorAlert("Could not get student locations")
             }
         }
     }
@@ -89,12 +89,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         let reuseId = "pin"
         
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        var pinView = self.mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            pinView!.pinTintColor = .red
+            pinView!.pinTintColor = UIColor.red
             pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         } else {
             pinView!.annotation = annotation
