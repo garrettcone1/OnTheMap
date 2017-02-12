@@ -148,12 +148,14 @@ class Client: NSObject {
         
     }
     
-    func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForParseGETMethod(/*_ method: String, */parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
+        /*
         let urlString = Constants.OTM.ParseBaseURL + method + Client.escapedParameters(parameters)
         print(urlString)
         let url = URL(string: urlString)!
-        let request = NSMutableURLRequest(url: url)
+        */
+        let request = NSMutableURLRequest(url: parseURLFromParameters(parameters))
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
         request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
         
@@ -212,20 +214,21 @@ class Client: NSObject {
         completionHandlerForParseData(parsedResult, nil)
     }
     
-    class func escapedParameters(_ parameters: [String: AnyObject]) -> String {
+    private func parseURLFromParameters(_ parameters: [String: AnyObject]) -> URL {
         
-        var urlVariables = [String]()
+        var components = URLComponents()
+        components.scheme = Constants.OTM.ParseScheme
+        components.host = Constants.OTM.ParseHost
+        components.path = Constants.OTM.ParsePath
+        components.queryItems = [URLQueryItem]()
         
         for (key, value) in parameters {
             
-            let stringValue = "\(value)"
-            
-            let escapedValue = stringValue.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-            
-            urlVariables += [key + "=" + "\(escapedValue!)"]
-            
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
         }
-        return (!urlVariables.isEmpty ? "?" : "") + urlVariables.joined(separator: "&")
+        
+        return components.url!
     }
     
     class func sharedInstance() -> Client {

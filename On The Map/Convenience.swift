@@ -75,13 +75,13 @@ extension Client {
     func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
         
         let parameters: [String: AnyObject] = [
-            Constants.OTMParameterKeys.limit: 100 as AnyObject /*,
+            Constants.OTMParameterKeys.limit: 100 as AnyObject,
             Constants.OTMParameterKeys.skip: 400 as AnyObject,
-            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject */
+            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
         ]
  
-        let method = Constants.Methods.Location
-        let _ = taskForParseGETMethod(method, parameters: parameters) { (JSONResult, error) in
+        //let method = Constants.Methods.Location
+        let _ = taskForParseGETMethod(/*method,*/ parameters: parameters) { (JSONResult, error) in
             
             if let error = error {
                 print(error)
