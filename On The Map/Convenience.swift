@@ -13,7 +13,9 @@ import MapKit
 extension Client {
     
     func authenticateWithViewController(_ username: String?, password: String?, hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, /*_ sessionID: String?, _ accountKey: String?,*/ _ errorString: String?) -> Void) {
+        
         self.postSessionID(username, password) { (success, errorString) in
+            
             if success {
                 completionHandlerForAuth(success, errorString)
             } else {
@@ -30,8 +32,6 @@ extension Client {
             ]]
         
         let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Session
-        
-        //let jsonBody = "{\"\"\(Constants.JSONBodyKeys.udacity)\": {\"\(Constants.JSONBodyKeys.username)\": \"\(username)\", \"\(Constants.JSONBodyKeys.password)\": \"\(password)\"}}"
         
         let _ = taskForUdacityPOSTMethod(url, parameters: parameters as [String: [String : AnyObject]]) { (JSONResult, error) in
             
@@ -65,11 +65,8 @@ extension Client {
                 print("Passed account key: \(key)")
                 
                 completionHandler(true, nil)
-                
             }
-            
         }
-        
     }
     
     func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
@@ -80,7 +77,6 @@ extension Client {
             Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
         ]
  
-        //let method = Constants.Methods.Location
         let _ = taskForParseGETMethod(Constants.Methods.Location, parameters: parameters) { (JSONResult, error) in
             
             if let error = error {
@@ -89,8 +85,8 @@ extension Client {
             } else {
                 // Return the locations result, otherwise let us know that there were no results in the output
                 if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
-                    StudentLocation.sharedInstance.studentLocationList = StudentLocation.locationsFromResults(locations)
-                    completionHandler(StudentLocation.sharedInstance.studentLocationList, nil)
+                    StudentArray.sharedInstance.myArray = StudentLocation.locationsFromResults(locations)
+                    completionHandler(StudentArray.sharedInstance.myArray, nil)
                 } else {
                     completionHandler(nil, "JSONResult was empty")
                 }

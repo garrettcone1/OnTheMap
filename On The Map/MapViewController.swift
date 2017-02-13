@@ -43,7 +43,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             performUIUpdatesOnMain {
                 if (results != nil) {
                 
-                    print("Success! Dowloaded Student Locations")
+                    print("Success! Downloaded Student Locations")
                     self.setMapLocations()
                     
                 } else {
@@ -56,19 +56,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func setMapLocations() {
         
+        let locations = StudentArray.sharedInstance.myArray
         var annotations = [MKPointAnnotation]()
         
-        for location in StudentLocation.sharedInstance.studentLocationList {
+        for location in locations {
             
             // The lat and long are going to be used to create a CLLocationCoordinated2D instance
-            let lat = CLLocationDegrees(location.latitude! as Double)
-            let long = CLLocationDegrees(location.longitude! as Double)
+            let lat = CLLocationDegrees(location.latitude as Double)
+            let long = CLLocationDegrees(location.longitude as Double)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-            let first = location.firstName! as String
-            let last = location.lastName! as String
-            let mediaURL = location.mediaURL! as String
+            let first = location.firstName as String
+            let last = location.lastName as String
+            let mediaURL = location.mediaURL as String
             
             // Create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
