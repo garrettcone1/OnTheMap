@@ -81,7 +81,7 @@ extension Client {
         ]
  
         //let method = Constants.Methods.Location
-        let _ = taskForParseGETMethod(/*method,*/ parameters: parameters) { (JSONResult, error) in
+        let _ = taskForParseGETMethod(Constants.Methods.Location, parameters: parameters) { (JSONResult, error) in
             
             if let error = error {
                 print(error)
