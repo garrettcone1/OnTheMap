@@ -36,19 +36,30 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    @IBAction func reloadButton(_ sender: Any) {
+        
+        for annotation: MKAnnotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        
+        getMapLocations()
+    }
+    
+    
+    
     func getMapLocations() {
         
         Client.sharedInstance().getStudentLocations() { (results, errorString) in
             
             performUIUpdatesOnMain {
                 if (results != nil) {
-                
-                    print("Success! Downloaded Student Locations")
+                    
                     self.setMapLocations()
+                    print("Success! Downloaded Student Locations")
                     
                 } else {
                     print("Could not get student locations")
-                    self.errorAlert("Could not get student locations")
+                    self.errorAlert(errorString!)
                 }
             }
         }

@@ -172,11 +172,7 @@ class Client: NSObject {
             }
             
             self.parseJSONWithCompletionHandler(data, completionHandlerForParseData: completionHandlerForGET)
-            /* Parse the data and use the data(First skip the first 5 characters of the response (Security characters by Udacity))
-            let range = Range(uncheckedBounds: (5, data.count))
-            let newData = data.subdata(in: range)
-            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
-            */
+            
         }
         task.resume()
         return task

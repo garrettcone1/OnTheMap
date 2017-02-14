@@ -100,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-777" y="9"/>
+            <point key="canvasLocation" x="-1162" y="9"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZXf-kh-t06">
@@ -120,23 +120,39 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VMh-ub-lFO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="761" y="374"/>
+            <point key="canvasLocation" x="511" y="392"/>
         </scene>
         <!--On The Map-->
         <scene sceneID="ibx-zH-EPt">
             <objects>
-                <tableViewController id="Ltr-Bd-rfP" customClass="ListViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="lhZ-C8-qFa">
+                <tableViewController storyboardIdentifier="ListViewController" id="Ltr-Bd-rfP" customClass="ListViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="28" sectionFooterHeight="28" id="lhZ-C8-qFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableViewCell" id="uuu-j9-jUL">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="StudentLocationViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableViewCell" textLabel="TcR-pe-IJD" detailTextLabel="CRC-10-v7D" rowHeight="66" style="IBUITableViewCellStyleSubtitle" id="uuu-j9-jUL">
+                                <rect key="frame" x="0.0" y="28" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uuu-j9-jUL" id="S2j-7B-2LA">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TcR-pe-IJD">
+                                            <rect key="frame" x="15" y="15" width="34" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CRC-10-v7D">
+                                            <rect key="frame" x="15" y="36" width="44" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -146,16 +162,24 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="On The Map" id="BwW-CY-3iU">
-                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Eak-FK-AVX"/>
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Eak-FK-AVX">
+                            <connections>
+                                <action selector="logOutButton:" destination="Ltr-Bd-rfP" id="RZQ-J5-Lls"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="gQQ-Lq-bNg"/>
-                            <barButtonItem systemItem="refresh" id="cwF-IU-hk4"/>
+                            <barButtonItem systemItem="refresh" id="cwF-IU-hk4">
+                                <connections>
+                                    <action selector="reloadButton:" destination="Ltr-Bd-rfP" id="2d3-tv-mYr"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2kS-b8-Z9F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1598" y="374"/>
+            <point key="canvasLocation" x="1345" y="392"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="MAr-CJ-FgG">
@@ -210,7 +234,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1l-Ev-po8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2380" y="8.5457271364317844"/>
+            <point key="canvasLocation" x="2169" y="9"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rzm-VE-3vU">
@@ -230,7 +254,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="au6-XR-Md9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="762" y="-282"/>
+            <point key="canvasLocation" x="511" y="-358"/>
         </scene>
         <!--On The Map-->
         <scene sceneID="hC3-S4-pgn">
@@ -264,7 +288,11 @@
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="Q9D-c4-Yg7"/>
-                            <barButtonItem systemItem="refresh" id="yBU-dg-6kJ"/>
+                            <barButtonItem systemItem="refresh" id="yBU-dg-6kJ">
+                                <connections>
+                                    <action selector="reloadButton:" destination="bPT-1Q-z4g" id="9Hr-2y-LSN"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -273,7 +301,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgM-kb-28I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1599" y="-282"/>
+            <point key="canvasLocation" x="1345" y="-358"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="cLu-fc-f34">
@@ -291,7 +319,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="052-SA-lpz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-78" y="9"/>
+            <point key="canvasLocation" x="-366" y="9"/>
         </scene>
     </scenes>
     <resources>
