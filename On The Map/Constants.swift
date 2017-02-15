@@ -23,7 +23,7 @@ struct Constants {
         static let FacebookAppID = "365362206864879"
         
         // URLs
-        //static let ParseBaseURL = "https://parse.udacity.com/parse/classes/"
+        static let ParseBaseURL = "https://parse.udacity.com/parse/classes/"
         static let ParseScheme = "https"
         static let ParseHost = "parse.udacity.com"
         static let ParsePath = "/parse/classes/"

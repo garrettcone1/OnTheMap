@@ -29,11 +29,12 @@ class LoginViewController: UIViewController {
         
         // Get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
+        /*
         subscribeToNotification(.UIKeyboardWillShow, selector: #selector(keyboardWillShow))
         subscribeToNotification(.UIKeyboardWillHide, selector: #selector(keyboardWillHide))
         subscribeToNotification(.UIKeyboardDidShow, selector: #selector(keyboardDidShow))
         subscribeToNotification(.UIKeyboardDidHide, selector: #selector(keyboardDidHide))
+        */
         
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
@@ -41,7 +42,7 @@ class LoginViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unsubscribeFromAllNotifications()
+        //unsubscribeFromAllNotifications()
     }
     
     @IBAction func loginPressed(_ sender: Any) {
@@ -70,7 +71,7 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         performUIUpdatesOnMain {
-            self.setUIEnabled(true)
+            //self.setUIEnabled(true)
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
             self.present(controller, animated: true, completion: nil)
         }
@@ -109,17 +110,17 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     // MARK: Show/Hide Keyboard
-    
+    /*
     func keyboardWillShow(_ notification: Notification) {
         if !keyboardOnScreen {
-            view.frame.origin.y -= keyboardHeight(notification)
+            //view.frame.origin.y -= keyboardHeight(notification)
         }
     }
     
     func keyboardWillHide(_ notification: Notification) {
         if keyboardOnScreen {
-            view.frame.origin.y += keyboardHeight(notification)
-            logoImageView.isHidden = false
+            //view.frame.origin.y += keyboardHeight(notification)
+            //logoImageView.isHidden = false
         }
     }
     
@@ -136,7 +137,7 @@ extension LoginViewController: UITextFieldDelegate {
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         return keyboardSize.cgRectValue.height
     }
-    
+    */
 }
 
 // LoginViewController (Configure UI)
@@ -159,7 +160,7 @@ private extension LoginViewController {
 }
 
 private extension LoginViewController {
-    
+    /*
     func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
         NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
     }
@@ -167,4 +168,5 @@ private extension LoginViewController {
     func unsubscribeFromAllNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
+    */
 }

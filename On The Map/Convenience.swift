@@ -12,7 +12,7 @@ import MapKit
 
 extension Client {
     
-    func authenticateWithViewController(_ username: String?, password: String?, hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, /*_ sessionID: String?, _ accountKey: String?,*/ _ errorString: String?) -> Void) {
+    func authenticateWithViewController(_ username: String?, password: String?, hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         self.postSessionID(username, password) { (success, errorString) in
             
@@ -69,6 +69,15 @@ extension Client {
         }
     }
     
+    func postNewStudentLocation(_ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
+        
+        // Where to start?
+        
+        // let _ = taskForParsePOSTMethod(Constants.Methods.Location, completionHandlerForPOST: <#T##(AnyObject?, NSError?) -> Void#>)
+        
+ 
+    }
+    
     func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
         
         let parameters: [String: AnyObject] = [
@@ -108,37 +117,7 @@ extension Client {
             }
         }
     }
-    /*
-    func getUdacityStudentName(_ userID: String, completionHandlerForGET: @escaping (_ success: Bool, _ firstName: String?, _ lastName: String?, _ errorString: NSError?) -> Void) {
-        
-        let _ = taskForUdacityGETMethod(Constants.Methods.Users, StudentLocation.sharedInstance.userID!) { (JSONResult, error) in
-            
-            if let error = error {
-                
-                completionHandlerForGET(false, nil, nil, error)
-            } else {
-                
-                guard let user = JSONResult?[Constants.JSONResponseKeys.user] as? [String: AnyObject] else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.user)' in \(JSONResult)")
-                    return
-                }
-                
-                guard let userFirstName = user[Constants.JSONResponseKeys.first_Name] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(user)")
-                    return
-                }
-                
-                guard let userLastName = user[Constants.JSONResponseKeys.last_Name] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.last_Name)' in \(user)")
-                    return
-                }
-                
-                completionHandlerForGET(true, userFirstName, userLastName, nil)
-            }
-        }
-    }*/
- 
-        
+    
 }
     
     

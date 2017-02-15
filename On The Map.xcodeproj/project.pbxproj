@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A33BEC31E52643700DF2B42 /* StudentArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A33BEC21E52643700DF2B42 /* StudentArray.swift */; };
+		4A33BEC71E54327000DF2B42 /* PostingPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A33BEC61E54327000DF2B42 /* PostingPinViewController.swift */; };
 		4A9430441E3A78A1006635DB /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430431E3A78A1006635DB /* Client.swift */; };
 		4A9430461E3AC8A5006635DB /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430451E3AC8A5006635DB /* Convenience.swift */; };
 		4AA141BE1E330A1600E2F997 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141BD1E330A1600E2F997 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		4A33BEC21E52643700DF2B42 /* StudentArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentArray.swift; sourceTree = "<group>"; };
+		4A33BEC61E54327000DF2B42 /* PostingPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostingPinViewController.swift; sourceTree = "<group>"; };
 		4A9430431E3A78A1006635DB /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		4A9430451E3AC8A5006635DB /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 		4AA141BA1E330A1600E2F997 /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +153,7 @@
 				4AA141BF1E330A1600E2F997 /* LoginViewController.swift */,
 				4AA141EF1E36B20000E2F997 /* MapViewController.swift */,
 				4AA141F11E36B6C800E2F997 /* ListViewController.swift */,
+				4A33BEC61E54327000DF2B42 /* PostingPinViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				4AA141F01E36B20000E2F997 /* MapViewController.swift in Sources */,
 				4AA141F21E36B6C800E2F997 /* ListViewController.swift in Sources */,
 				4A33BEC31E52643700DF2B42 /* StudentArray.swift in Sources */,
+				4A33BEC71E54327000DF2B42 /* PostingPinViewController.swift in Sources */,
 				4AA141F61E36F86300E2F997 /* GCDBlackBox.swift in Sources */,
 				4AA141BE1E330A1600E2F997 /* AppDelegate.swift in Sources */,
 			);

@@ -14,7 +14,6 @@ class Client: NSObject {
     // Shared Session
     var session = URLSession.shared
     
-    
     // Initializer
     override init() {
         super.init()
@@ -148,7 +147,47 @@ class Client: NSObject {
         
     }
     
-    func taskForParseGETMethod(_ method: String,parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForParsePOSTMethod(_ method: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        
+        let urlString = Constants.OTM.ParseBaseURL + method
+        let url = URL(string: urlString)!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
+        request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        /////////////////////////
+        /* Do I need to change or add anything of what I pass in this completion handler??
+        do {
+            request.httpBody = try! JSONSerialization.data(withJSONObject: jsonBody, options: .prettyPrinted)
+        }
+        */
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            guard (error == nil) else {
+                print("There was an error with your Parse POST request: \(error)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!: \(response)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+            
+            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
+        }
+        task.resume()
+        return task
+        
+    }
+ 
+    func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         let request = NSMutableURLRequest(url: parseURLFromParameters(parameters, withPathExtension: method))
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
@@ -171,8 +210,7 @@ class Client: NSObject {
                 return
             }
             
-            self.parseJSONWithCompletionHandler(data, completionHandlerForParseData: completionHandlerForGET)
-            
+            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
         }
         task.resume()
         return task
@@ -190,19 +228,6 @@ class Client: NSObject {
         }
         
         completionHandlerForConvertData(parsedResult, nil)
-    }
-    
-    private func parseJSONWithCompletionHandler(_ data: Data, completionHandlerForParseData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
-        
-        var parsedResult: AnyObject!
-        do {
-            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
-        } catch {
-            let userInfo = [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForParseData(nil, NSError(domain: "parseJSONWithCompletionHandler", code: 1, userInfo: userInfo))
-        }
-        
-        completionHandlerForParseData(parsedResult, nil)
     }
     
     private func parseURLFromParameters(_ parameters: [String: AnyObject], withPathExtension: String? = nil) -> URL {

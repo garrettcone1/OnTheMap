@@ -91,6 +91,15 @@ class ListViewController: UITableViewController {
         }
     }
     
+    @IBAction func addOrChangePin(_ sender: Any) {
+        
+        performUIUpdatesOnMain {
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinViewController")
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    
     @IBAction func reloadButton(_ sender: Any) {
         
         getStudentLocations()
