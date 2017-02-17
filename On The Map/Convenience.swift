@@ -24,7 +24,7 @@ extension Client {
         }
     }
     
-    func postSessionID(_ username: String?, _ password: String?, completionHandler: @escaping (_ succes: Bool, _ errorString: String?) -> Void) {
+    func postSessionID(_ username: String?, _ password: String?, completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let parameters: [String: [String: AnyObject]] = [Constants.JSONBodyKeys.udacity : [
             Constants.JSONBodyKeys.username: username as AnyObject,
@@ -76,6 +76,45 @@ extension Client {
         // let _ = taskForParsePOSTMethod(Constants.Methods.Location, completionHandlerForPOST: <#T##(AnyObject?, NSError?) -> Void#>)
         
  
+    }
+    
+    func getPublicUserData(userID: String?, _ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+        
+        let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Users // + Constants.JSONBodyKeys.userIdKey
+        
+        let _ = taskForUdacityGETMethod(url, userID: UserData.userId) { (JSONResult, error) in
+        
+            if let error = error {
+                print(error)
+                completionHandler(false, "Could not get user data.")
+            } else {
+                
+                guard let user = JSONResult?[Constants.JSONResponseKeys.user] as? [String: AnyObject] else {
+                    print("Could not find key: '\(Constants.JSONResponseKeys.user)' in \(JSONResult)")
+                    return
+                }
+                
+                guard let userID = user[Constants.JSONResponseKeys.userIdKey] as? String else {
+                    print("Could not find key: '\(Constants.JSONResponseKeys.userIdKey)' in \(JSONResult)")
+                    return
+                }
+                print("Passed GET userID: \(userID)")
+                
+                guard let firstName = user[Constants.JSONResponseKeys.first_Name] as? String else {
+                    print("Could not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(JSONResult)")
+                    return
+                }
+                print("Passed GET firstName: \(firstName)")
+                
+                guard let lastName = user[Constants.JSONResponseKeys.last_Name] as? String else {
+                    print("Could not find key: '\(Constants.JSONResponseKeys.last_Name)' in \(JSONResult)")
+                    return
+                }
+                print("Passed GET lastName: \(lastName)")
+                
+                completionHandler(true, nil)
+            }
+        }
     }
     
     func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {

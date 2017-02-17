@@ -44,7 +44,7 @@ struct Constants {
         static let ToDelete = "session"
         
         // Users
-        static let Users = "users"
+        static let Users = "users/"
         
         // Public User Data
         static let AuthenticationTokenNew = "authentication/token/new"
@@ -67,7 +67,6 @@ struct Constants {
         static let username = "username"
         static let password = "password"
         static let account = "account"
-        static let key = "key"
         
         static let uniqueKey = "uniqueKey"
         static let FirstName = "firstName"
@@ -99,6 +98,7 @@ struct Constants {
         static let key = "key"
         
         static let user = "user"
+        static let userIdKey = "key"
         static let last_Name = "last_name"
         static let first_Name = "first_name"
         static let results = "results"

@@ -65,11 +65,10 @@ class Client: NSObject {
         
     }
     
-    func taskForUdacityGETMethod(_ method: String, _ userID: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForUdacityGETMethod(_ urlString: String, userID: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
     
-        let urlString = Constants.OTM.UdacityBaseURL + method + "/" + userID
+        let urlString = urlString
         let url = URL(string: urlString)
-        
         let request = NSMutableURLRequest(url: url!)
         
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in

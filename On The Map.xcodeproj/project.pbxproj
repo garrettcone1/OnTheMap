@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A33BEC31E52643700DF2B42 /* StudentArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A33BEC21E52643700DF2B42 /* StudentArray.swift */; };
 		4A33BEC71E54327000DF2B42 /* PostingPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A33BEC61E54327000DF2B42 /* PostingPinViewController.swift */; };
+		4A33BEC91E56CCC300DF2B42 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A33BEC81E56CCC300DF2B42 /* UserData.swift */; };
 		4A9430441E3A78A1006635DB /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430431E3A78A1006635DB /* Client.swift */; };
 		4A9430461E3AC8A5006635DB /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9430451E3AC8A5006635DB /* Convenience.swift */; };
 		4AA141BE1E330A1600E2F997 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA141BD1E330A1600E2F997 /* AppDelegate.swift */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		4A33BEC21E52643700DF2B42 /* StudentArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentArray.swift; sourceTree = "<group>"; };
 		4A33BEC61E54327000DF2B42 /* PostingPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostingPinViewController.swift; sourceTree = "<group>"; };
+		4A33BEC81E56CCC300DF2B42 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		4A9430431E3A78A1006635DB /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		4A9430451E3AC8A5006635DB /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 		4AA141BA1E330A1600E2F997 /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +94,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A33BECA1E56CDFC00DF2B42 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4A9430451E3AC8A5006635DB /* Convenience.swift */,
+				4A9430431E3A78A1006635DB /* Client.swift */,
+				4AA141F31E36D12900E2F997 /* Constants.swift */,
+				4ABF8FC01E4446C00020E65C /* StudentLocation.swift */,
+				4A33BEC21E52643700DF2B42 /* StudentArray.swift */,
+				4A33BEC81E56CCC300DF2B42 /* UserData.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		4AA141B11E330A1600E2F997 = {
 			isa = PBXGroup;
 			children = (
@@ -117,11 +132,7 @@
 			children = (
 				4AA141BD1E330A1600E2F997 /* AppDelegate.swift */,
 				4AA141F51E36F86300E2F997 /* GCDBlackBox.swift */,
-				4A9430451E3AC8A5006635DB /* Convenience.swift */,
-				4A9430431E3A78A1006635DB /* Client.swift */,
-				4AA141F31E36D12900E2F997 /* Constants.swift */,
-				4ABF8FC01E4446C00020E65C /* StudentLocation.swift */,
-				4A33BEC21E52643700DF2B42 /* StudentArray.swift */,
+				4A33BECA1E56CDFC00DF2B42 /* Model */,
 				4AA141EC1E33126300E2F997 /* View Controllers */,
 				4AA141ED1E33128600E2F997 /* Assets */,
 				4AA141EE1E3312B700E2F997 /* Supporting Files */,
@@ -319,6 +330,7 @@
 				4A9430441E3A78A1006635DB /* Client.swift in Sources */,
 				4AA141C01E330A1600E2F997 /* LoginViewController.swift in Sources */,
 				4AA141F01E36B20000E2F997 /* MapViewController.swift in Sources */,
+				4A33BEC91E56CCC300DF2B42 /* UserData.swift in Sources */,
 				4AA141F21E36B6C800E2F997 /* ListViewController.swift in Sources */,
 				4A33BEC31E52643700DF2B42 /* StudentArray.swift in Sources */,
 				4A33BEC71E54327000DF2B42 /* PostingPinViewController.swift in Sources */,
