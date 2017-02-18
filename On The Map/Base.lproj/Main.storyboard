@@ -185,7 +185,23 @@
             </objects>
             <point key="canvasLocation" x="1345" y="392"/>
         </scene>
-        <!--Posting Pin View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="3DK-iB-Ahf">
+            <objects>
+                <navigationController storyboardIdentifier="PostingPinNavController" id="N2s-bg-17x" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eQc-ac-xLF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="FIV-74-z04" kind="relationship" relationship="rootViewController" id="0AB-th-Yci"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tqV-u6-TvO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2089" y="9"/>
+        </scene>
+        <!--Add Location-->
         <scene sceneID="MAr-CJ-FgG">
             <objects>
                 <viewController storyboardIdentifier="PostingPinViewController" id="FIV-74-z04" customClass="PostingPinViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -197,19 +213,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MwU-XM-afg">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Add Location" id="eMN-Y9-LgH">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Ugh-ok-rTW">
-                                            <connections>
-                                                <action selector="cancelAction:" destination="FIV-74-z04" id="jrY-6u-Uf6"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="AddLocationLogo" translatesAutoresizingMaskIntoConstraints="NO" id="dup-Xe-OZq">
                                 <rect key="frame" x="119" y="187" width="137" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -235,18 +238,76 @@
                                 <state key="normal" title="FIND LOCATION">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="findLocation:" destination="FIV-74-z04" eventType="touchUpInside" id="84Q-Ce-xqi"/>
+                                    <segue destination="jdC-0j-CTe" kind="show" id="GRi-Fq-M2v"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Add Location" id="kSX-P3-0un">
+                        <barButtonItem key="backBarButtonItem" title="Add Location" id="wH8-6m-clh"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SOY-IN-5Uf">
+                            <connections>
+                                <action selector="cancelActioin:" destination="FIV-74-z04" id="5C3-ow-x13"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="enterLocationTextField" destination="Am6-h7-yol" id="tft-zG-a4L"/>
                         <outlet property="enterWebsiteTextField" destination="y2q-eG-new" id="rWl-6f-I60"/>
+                        <outlet property="findLocationButton" destination="FR3-lx-t7y" id="yTT-K6-Rfa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1l-Ev-po8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2169" y="9"/>
+            <point key="canvasLocation" x="2828" y="9"/>
+        </scene>
+        <!--Add Location-->
+        <scene sceneID="Ja8-fP-scq">
+            <objects>
+                <viewController storyboardIdentifier="FinishPostingPinViewController" id="jdC-0j-CTe" customClass="FinishPostingPinViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qrM-xP-1yl"/>
+                        <viewControllerLayoutGuide type="bottom" id="52H-Wr-kHc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="e4P-Rw-ugU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="YeL-g6-d3I">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUY-dL-g5z">
+                                <rect key="frame" x="16" y="607" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.086274509803921567" green="0.64313725490196083" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="FINISH">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="finishPostingPin:" destination="jdC-0j-CTe" eventType="touchUpInside" id="z27-iv-Esr"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YeL-g6-d3I" firstAttribute="leading" secondItem="e4P-Rw-ugU" secondAttribute="leading" id="0E3-h8-LIl"/>
+                            <constraint firstItem="52H-Wr-kHc" firstAttribute="top" secondItem="YeL-g6-d3I" secondAttribute="bottom" id="HFu-1i-eMH"/>
+                            <constraint firstItem="YeL-g6-d3I" firstAttribute="top" secondItem="qrM-xP-1yl" secondAttribute="bottom" id="dcU-An-EwV"/>
+                            <constraint firstAttribute="trailing" secondItem="YeL-g6-d3I" secondAttribute="trailing" id="ttH-YB-pbY"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Location" id="vAh-IT-dMY"/>
+                    <connections>
+                        <outlet property="finishButton" destination="VUY-dL-g5z" id="F0i-dl-k4G"/>
+                        <outlet property="mapView" destination="YeL-g6-d3I" id="KSt-bn-FJO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O2b-md-ldc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3541.5999999999999" y="8.5457271364317844"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rzm-VE-3vU">

@@ -69,16 +69,44 @@ extension Client {
         }
     }
     
-    func postNewStudentLocation(_ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
+    func postNewStudentLocation( userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
         
-        // Where to start?
-        
-        // let _ = taskForParsePOSTMethod(Constants.Methods.Location, completionHandlerForPOST: <#T##(AnyObject?, NSError?) -> Void#>)
-        
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(mapString) { (placemarks, error) in
+            
+            if let placemark = placemarks?.first {
+                
+                let coordinates: CLLocationCoordinate2D = (placemark.location?.coordinate)!
+                let latitude = coordinates.latitude
+                let longitude = coordinates.longitude
+                let jsonBody: [String: AnyObject] = [
+                    Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
+                    Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
+                    Constants.JSONBodyKeys.LastName: lastName as AnyObject,
+                    Constants.JSONBodyKeys.Latitude: latitude as AnyObject,
+                    Constants.JSONBodyKeys.Longitude: longitude as AnyObject,
+                    Constants.JSONBodyKeys.MediaURL: mediaURL as AnyObject,
+                    Constants.JSONBodyKeys.MapString: mapString as AnyObject
+                ]
+                
+                let _ = self.taskForParsePOSTMethod(Constants.Methods.Location, jsonBody: jsonBody) { (JSONResult, error) in
+                    
+                    if let error = error {
+                        print(error)
+                        completionHandler(false, "Could not POST Student Location.")
+                    } else {
+                        
+                        completionHandler(true, "Success in parsing for the POST Method.")
+                    }
+                }
+                
+                
+            }
+        }
  
     }
     
-    func getPublicUserData(userID: String?, _ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+    func getPublicUserData(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Users // + Constants.JSONBodyKeys.userIdKey
         

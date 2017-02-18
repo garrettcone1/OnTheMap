@@ -48,7 +48,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBAction func addOrChangePin(_ sender: Any) {
         
         performUIUpdatesOnMain {
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinViewController")
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
             self.present(controller, animated: true, completion: nil)
         }
     }

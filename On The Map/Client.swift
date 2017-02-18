@@ -146,7 +146,7 @@ class Client: NSObject {
         
     }
     
-    func taskForParsePOSTMethod(_ method: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForParsePOSTMethod(_ method: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         let urlString = Constants.OTM.ParseBaseURL + method
         let url = URL(string: urlString)!
@@ -156,12 +156,10 @@ class Client: NSObject {
         request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        /////////////////////////
-        /* Do I need to change or add anything of what I pass in this completion handler??
         do {
             request.httpBody = try! JSONSerialization.data(withJSONObject: jsonBody, options: .prettyPrinted)
         }
-        */
+        
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
             guard (error == nil) else {
