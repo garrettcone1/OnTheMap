@@ -19,6 +19,7 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         
+        // Rounds the corners of the buttons
         findLocationButton.layer.cornerRadius = 5
         findLocationButton.clipsToBounds = true
         
@@ -26,7 +27,7 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         self.enterWebsiteTextField.delegate = self
     }
     
-    @IBAction func cancelActioin(_ sender: Any) {
+    @IBAction func cancelAction(_ sender: Any) {
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -34,38 +35,65 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func findLocation(_ sender: Any) {
         
+        LocationData.enteredLocation = self.enterLocationTextField.text!
+        LocationData.enteredWebsite = self.enterWebsiteTextField.text!
+        
         if enterLocationTextField.text!.isEmpty || enterWebsiteTextField.text!.isEmpty {
             self.errorAlert("Location or Website fields Empty")
         } else {
             
-            Client.sharedInstance().getPublicUserData() { (success, errorString) in
+            self.getMyLocation() { (success) in
                 
-                if success {
-                    self.postStudentLocation()
-                    print("Success in getting Public User Data")
-                } else {
-                    self.errorAlert(errorString!)
+                if (success) {
+                    print("Successfully set your location data")
                 }
+            }
+            
+        }
+    }
+    
+    func getMyLocation(completionHandler: @escaping (_ success: Bool) -> Void) {
+        
+        performUIUpdatesOnMain {
+            
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(LocationData.enteredLocation!) { (placemark, error) in
+            
+                guard error == nil else {
+                    print("Could not geocode the entered location: \(error)")
+                    return
+                }
+                
+                //if let placemark = placemark?.first {
+                guard let placemark = placemark else {
+                    print("No placemarks found")
+                    return
+                    
+                }
+                guard let latitude = placemark[0].location?.coordinate.latitude else {
+                    print("This latitude placemark is: \(placemark)")
+                    return
+                }
+                
+                    
+                guard let longitude = placemark[0].location?.coordinate.longitude else {
+                    print("This longitude placemark is: \(placemark)")
+                    return
+                }
+                
+                LocationData.latitude = latitude
+                LocationData.longitude = longitude
+    
+                print(latitude)
+                print(longitude)
+                
+                
+                
+                completionHandler(true)
             }
         }
     }
     
-    func postStudentLocation() {
-        
-        performUIUpdatesOnMain {
-            
-            Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: self.enterWebsiteTextField.text!, mapString: self.enterLocationTextField.text!) { (success, errorString) in
-                
-                if success {
-                    print("Success in posting new Student Location")
-                } else {
-                    print("Failed to POST: \(errorString)")
-                    self.errorAlert("Failed to add new Student Location")
-                }
-                
-            }
-        }
-    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.enterLocationTextField.resignFirstResponder()

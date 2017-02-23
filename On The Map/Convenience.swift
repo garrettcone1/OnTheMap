@@ -64,6 +64,16 @@ extension Client {
                 }
                 print("Passed account key: \(key)")
                 
+                UserData.userId = key
+                
+                self.getPublicUserData() { (success, error) in
+                    
+                    if (success) {
+                        print("Successfully got user data")
+                    } else {
+                        print("Could not get user data: \(error!)")
+                    }
+                }
                 completionHandler(true, nil)
             }
         }
@@ -72,13 +82,14 @@ extension Client {
     func postNewStudentLocation( userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
         
         let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(mapString) { (placemarks, error) in
+        geocoder.geocodeAddressString(mapString) { (placemarks, error) -> Void in
             
             if let placemark = placemarks?.first {
-                
-                let coordinates: CLLocationCoordinate2D = (placemark.location?.coordinate)!
+            
+                let coordinates: CLLocationCoordinate2D = (placemark.location!.coordinate)
                 let latitude = coordinates.latitude
                 let longitude = coordinates.longitude
+                
                 let jsonBody: [String: AnyObject] = [
                     Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
                     Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
@@ -99,18 +110,13 @@ extension Client {
                         completionHandler(true, "Success in parsing for the POST Method.")
                     }
                 }
-                
-                
             }
         }
- 
     }
     
     func getPublicUserData(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
-        let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Users // + Constants.JSONBodyKeys.userIdKey
-        
-        let _ = taskForUdacityGETMethod(url, userID: UserData.userId) { (JSONResult, error) in
+        let _ = taskForUdacityGETMethod(Constants.Methods.Users, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName) { (JSONResult, error) in
         
             if let error = error {
                 print(error)
@@ -128,17 +134,22 @@ extension Client {
                 }
                 print("Passed GET userID: \(userID)")
                 
+                
                 guard let firstName = user[Constants.JSONResponseKeys.first_Name] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(JSONResult)")
                     return
                 }
                 print("Passed GET firstName: \(firstName)")
                 
+                UserData.firstName = firstName
+                
                 guard let lastName = user[Constants.JSONResponseKeys.last_Name] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.last_Name)' in \(JSONResult)")
                     return
                 }
                 print("Passed GET lastName: \(lastName)")
+                
+                UserData.lastName = lastName
                 
                 completionHandler(true, nil)
             }

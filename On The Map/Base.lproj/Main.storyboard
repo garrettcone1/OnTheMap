@@ -250,7 +250,7 @@
                         <barButtonItem key="backBarButtonItem" title="Add Location" id="wH8-6m-clh"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SOY-IN-5Uf">
                             <connections>
-                                <action selector="cancelActioin:" destination="FIV-74-z04" id="5C3-ow-x13"/>
+                                <action selector="cancelAction:" destination="FIV-74-z04" id="Zxu-zL-iwu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -287,7 +287,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="finishPostingPin:" destination="jdC-0j-CTe" eventType="touchUpInside" id="z27-iv-Esr"/>
+                                    <action selector="finishPostingPin:" destination="jdC-0j-CTe" eventType="touchUpInside" id="wRW-0R-Sfn"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -301,8 +301,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Add Location" id="vAh-IT-dMY"/>
                     <connections>
-                        <outlet property="finishButton" destination="VUY-dL-g5z" id="F0i-dl-k4G"/>
-                        <outlet property="mapView" destination="YeL-g6-d3I" id="KSt-bn-FJO"/>
+                        <outlet property="finishButton" destination="VUY-dL-g5z" id="HBa-3N-ecs"/>
+                        <outlet property="mapView" destination="YeL-g6-d3I" id="hJ4-Oc-1vV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O2b-md-ldc" userLabel="First Responder" sceneMemberID="firstResponder"/>

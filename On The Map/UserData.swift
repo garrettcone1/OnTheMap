@@ -11,8 +11,8 @@ import UIKit
 
 struct UserData {
     
-    static var firstName = ""
-    static var lastName = ""
-    static var userId = ""
+    static var firstName: String = ""
+    static var lastName: String = ""
+    static var userId: String = ""
     
 }
