@@ -34,6 +34,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 }
             }
         }
+        
     }
     
     @IBAction func reloadButton(_ sender: Any) {

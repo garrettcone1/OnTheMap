@@ -22,6 +22,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         self.loadMap()
+        
         self.mapView.delegate = self
         
         finishButton.layer.cornerRadius = 5
@@ -77,6 +78,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         annotations.append(annotation)
         
         self.mapView.addAnnotations(annotations)
+        
     }
     
     func postStudentLocation() {
