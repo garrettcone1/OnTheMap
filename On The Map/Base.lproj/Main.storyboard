@@ -70,6 +70,10 @@
                                     <action selector="signUpButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AQd-nj-hUo"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DtR-HU-uKo">
+                                <rect key="frame" x="177" y="426" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -91,6 +95,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="DtR-HU-uKo" id="NFq-Iu-aVC"/>
                         <outlet property="emailTextField" destination="3c4-uc-1Ds" id="veO-qu-6MS"/>
                         <outlet property="loginButton" destination="LN4-fL-wK0" id="btY-0y-lNq"/>
                         <outlet property="logoImageView" destination="KWJ-4w-Pa3" id="0g8-LR-z0Z"/>
@@ -242,6 +247,10 @@
                                     <action selector="findLocation:" destination="FIV-74-z04" eventType="touchUpInside" id="84Q-Ce-xqi"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fIJ-sa-vsE">
+                                <rect key="frame" x="177" y="394" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -254,6 +263,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="fIJ-sa-vsE" id="26i-Np-waG"/>
                         <outlet property="enterLocationTextField" destination="Am6-h7-yol" id="tft-zG-a4L"/>
                         <outlet property="enterWebsiteTextField" destination="y2q-eG-new" id="rWl-6f-I60"/>
                         <outlet property="findLocationButton" destination="FR3-lx-t7y" id="yTT-K6-Rfa"/>
@@ -344,6 +354,10 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="esJ-hN-xvI">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                             </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="XXB-dB-B5y">
+                                <rect key="frame" x="177" y="331" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -373,6 +387,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="XXB-dB-B5y" id="gxK-E6-CLH"/>
                         <outlet property="mapView" destination="esJ-hN-xvI" id="bBI-IJ-wlM"/>
                     </connections>
                 </viewController>

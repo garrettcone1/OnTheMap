@@ -12,9 +12,6 @@ import UIKit
 class LoginViewController: UIViewController {
 
     var appDelegate: AppDelegate!
-    var keyboardOnScreen = false
-    
-    var errorMessage = String()
     
     // Outlets
     @IBOutlet weak var logoImageView: UIImageView!
@@ -23,10 +20,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.activityIndicator.isHidden = true
         loginButton.layer.cornerRadius = 5
         loginButton.clipsToBounds = true
         
@@ -50,11 +49,13 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginPressed(_ sender: Any) {
         
-        
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
             self.errorAlert("Email or Password is Empty")
         } else {
             setUIEnabled(false)
+            
+            self.activityIndicator.isHidden = false
+            self.activityIndicator.startAnimating()
             
             Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
@@ -63,6 +64,9 @@ class LoginViewController: UIViewController {
                         
                         print("Successful Authentication")
                         self.completeLogin()
+                        
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
                     } else {
                         self.errorAlert(errorString!)
                         
@@ -74,7 +78,7 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         performUIUpdatesOnMain {
-            //self.setUIEnabled(true)
+            self.setUIEnabled(true)
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
             self.present(controller, animated: true, completion: nil)
         }
@@ -160,16 +164,4 @@ private extension LoginViewController {
         }
     }
     
-}
-
-private extension LoginViewController {
-    /*
-    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
-        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
-    }
-    
-    func unsubscribeFromAllNotifications() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    */
 }

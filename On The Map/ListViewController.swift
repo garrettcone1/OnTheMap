@@ -11,9 +11,10 @@ import UIKit
 
 class ListViewController: UITableViewController {
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -60,6 +61,7 @@ class ListViewController: UITableViewController {
     }
     
     func getStudentLocations() {
+        
         
         Client.sharedInstance().getStudentLocations() { (results, errorString) in
             

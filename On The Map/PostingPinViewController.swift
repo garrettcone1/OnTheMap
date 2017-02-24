@@ -17,8 +17,11 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var findLocationButton: UIButton!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         
+        self.activityIndicator.isHidden = true
         // Rounds the corners of the buttons
         findLocationButton.layer.cornerRadius = 5
         findLocationButton.clipsToBounds = true
@@ -42,12 +45,18 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
             self.errorAlert("Location or Website fields Empty")
         } else {
             
+            self.activityIndicator.isHidden = false
+            self.activityIndicator.startAnimating()
+            
             self.getMyLocation() { (success) in
                 
                 if (success) {
                     print("Successfully set your location data")
                     
                     self.performSegue(withIdentifier: "lastSegue", sender: nil)
+                    
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                 }
             }
             

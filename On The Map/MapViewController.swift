@@ -14,8 +14,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.activityIndicator.isHidden = true
         
         getMapLocations()
     }
@@ -57,12 +61,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func getMapLocations() {
         
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
+        
         Client.sharedInstance().getStudentLocations() { (results, errorString) in
             
             performUIUpdatesOnMain {
                 if (results != nil) {
                     
                     self.setMapLocations()
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     print("Success! Downloaded Student Locations")
                     
                 } else {

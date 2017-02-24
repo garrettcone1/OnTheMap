@@ -42,6 +42,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         performUIUpdatesOnMain {
             
             self.postStudentLocation()
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -49,13 +50,11 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
     
     func loadMap() {
         
-        //let lat = CLLocationDegrees(LocationData.latitude!)
-        //let long = CLLocationDegrees(LocationData.longitude!)
+        
         let lat = CLLocationDegrees(LocationData.latitude as Double)
         let long = CLLocationDegrees(LocationData.longitude as Double)
         
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-        //let coordinate = CLLocationCoordinate2D(latitude: LocationData.latitude, longitude: LocationData.longitude)
         
         self.coordinate = coordinate
         let region = MKCoordinateRegionMake(coordinate, MKCoordinateSpanMake(1, 1))
@@ -85,7 +84,6 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         
         performUIUpdatesOnMain {
             
-            //self.loadMapAndAnnotations()
             
             Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
