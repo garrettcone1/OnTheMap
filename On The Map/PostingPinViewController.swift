@@ -46,6 +46,8 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                 
                 if (success) {
                     print("Successfully set your location data")
+                    
+                    self.performSegue(withIdentifier: "lastSegue", sender: nil)
                 }
             }
             
@@ -54,44 +56,48 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     func getMyLocation(completionHandler: @escaping (_ success: Bool) -> Void) {
         
-        performUIUpdatesOnMain {
+        
             
             let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(LocationData.enteredLocation!) { (placemark, error) in
-            
-                guard error == nil else {
-                    print("Could not geocode the entered location: \(error)")
-                    return
-                }
                 
-                //if let placemark = placemark?.first {
-                guard let placemark = placemark else {
-                    print("No placemarks found")
-                    return
+                performUIUpdatesOnMain {
                     
-                }
-                guard let latitude = placemark[0].location?.coordinate.latitude else {
-                    print("This latitude placemark is: \(placemark)")
-                    return
-                }
+                    print(Thread.isMainThread)
+                    
+                    guard error == nil else {
+                        print("Could not geocode the entered location: \(error)")
+                        return
+                    }
+                
+                    guard let placemark = placemark else {
+                        print("No placemarks found")
+                        return
+                    
+                    }
+                    guard let latitude = placemark[0].location?.coordinate.latitude else {
+                        print("This latitude placemark is: \(placemark)")
+                        return
+                    }
                 
                     
-                guard let longitude = placemark[0].location?.coordinate.longitude else {
-                    print("This longitude placemark is: \(placemark)")
-                    return
+                    guard let longitude = placemark[0].location?.coordinate.longitude else {
+                        print("This longitude placemark is: \(placemark)")
+                        return
+                    }
+                
+                    LocationData.latitude = latitude
+                    LocationData.longitude = longitude
+                    
+                    
+                    print(latitude)
+                    print(longitude)
+                
+                    completionHandler(true)
+
                 }
-                
-                LocationData.latitude = latitude
-                LocationData.longitude = longitude
-    
-                print(latitude)
-                print(longitude)
-                
-                
-                
-                completionHandler(true)
             }
-        }
+        
     }
     
     

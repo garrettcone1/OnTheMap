@@ -240,7 +240,6 @@
                                 </state>
                                 <connections>
                                     <action selector="findLocation:" destination="FIV-74-z04" eventType="touchUpInside" id="84Q-Ce-xqi"/>
-                                    <segue destination="jdC-0j-CTe" kind="show" id="GRi-Fq-M2v"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -250,7 +249,7 @@
                         <barButtonItem key="backBarButtonItem" title="Add Location" id="wH8-6m-clh"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SOY-IN-5Uf">
                             <connections>
-                                <action selector="cancelAction:" destination="FIV-74-z04" id="Zxu-zL-iwu"/>
+                                <action selector="cancelAction:" destination="FIV-74-z04" id="mZ8-JY-Mji"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -258,11 +257,12 @@
                         <outlet property="enterLocationTextField" destination="Am6-h7-yol" id="tft-zG-a4L"/>
                         <outlet property="enterWebsiteTextField" destination="y2q-eG-new" id="rWl-6f-I60"/>
                         <outlet property="findLocationButton" destination="FR3-lx-t7y" id="yTT-K6-Rfa"/>
+                        <segue destination="jdC-0j-CTe" kind="show" identifier="lastSegue" id="UGq-Wo-VjL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1l-Ev-po8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2828" y="9"/>
+            <point key="canvasLocation" x="2818" y="9"/>
         </scene>
         <!--Add Location-->
         <scene sceneID="Ja8-fP-scq">

@@ -58,8 +58,8 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         //let coordinate = CLLocationCoordinate2D(latitude: LocationData.latitude, longitude: LocationData.longitude)
         
         self.coordinate = coordinate
-        //let region = MKCoordinateRegionMake(coordinate, MKCoordinateSpanMake(1, 1))
-        //mapView.setRegion(region, animated: true)
+        let region = MKCoordinateRegionMake(coordinate, MKCoordinateSpanMake(1, 1))
+        mapView.setRegion(region, animated: true)
         
     }
     
