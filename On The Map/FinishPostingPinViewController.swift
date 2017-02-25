@@ -41,15 +41,21 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         
         performUIUpdatesOnMain {
             
-            self.postStudentLocation()
-            self.dismiss(animated: true, completion: nil)
+            self.postStudentLocation() { (success) in
+            
+                if (success) {
+                    
+                    self.dismiss(animated: true, completion: nil)
+                } else {
+                    
+                    // Add an alert message here
+                    print("Check your internet connection")
+                }
+            }
         }
     }
     
-    
-    
     func loadMap() {
-        
         
         let lat = CLLocationDegrees(LocationData.latitude as Double)
         let long = CLLocationDegrees(LocationData.longitude as Double)
@@ -80,21 +86,66 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    func postStudentLocation() {
+    func postStudentLocation(_ completionHandler: @escaping (_ success: Bool) -> Void) {
         
         performUIUpdatesOnMain {
             
+            self.setAnnotations()
             
-            Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+            if UserData.objectId == "" {
+                Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
-                if success {
-                    print("Success in posting new Student Location")
+                    performUIUpdatesOnMain {
+                        
                     
-                } else {
-                    print("Failed to POST: \(errorString)")
-                    self.errorAlert("Failed to add new Student Location")
+                        if success {
+                            
+                            Client.sharedInstance().getStudentLocations() { (results, error) in
+                                
+                                if results != nil {
+                                    
+                                    print("Success in posting new Student Location and getting other student locations")
+                                    completionHandler(true)
+                                } else {
+                                    completionHandler(false)
+                                }
+                            }
+                                
+                        } else {
+                            print("Failed to POST: \(errorString)")
+                            self.errorAlert(errorString)
+                        }
+                    }
                 }
+            } else {
                 
+                // Call PUT Method Here
+                Client.sharedInstance().changeMyLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                    performUIUpdatesOnMain {
+                    
+                        if success {
+                            completionHandler(true)
+                            print("Success in changing your student location")
+                            
+                            Client.sharedInstance().getStudentLocations() { (results, error) in
+                                
+                                performUIUpdatesOnMain {
+                                    
+                                    if results != nil {
+                                    
+                                        print("Success in posting new Student Location and getting other student locations")
+                                        completionHandler(true)
+                                    }
+                                }
+                            }
+                            
+                        } else {
+                            self.errorAlert(errorString!)
+                            completionHandler(false)
+                        }
+                    }
+                }
             }
         }
     }

@@ -52,9 +52,34 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func addOrChangePin(_ sender: Any) {
         
-        performUIUpdatesOnMain {
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
-            self.present(controller, animated: true, completion: nil)
+        if UserData.objectId == "" {
+        
+            performUIUpdatesOnMain {
+                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                self.present(controller, animated: true, completion: nil)
+            }
+        } else {
+            
+            let message = "User '\(UserData.firstName + " " + UserData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
+            
+            let alertController = UIAlertController()
+            alertController.title = ""
+            alertController.message = message
+            
+            let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default) { (action) in
+                
+                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                self.present(controller, animated: true, completion: nil)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { (action) in
+                
+                alertController.dismiss(animated: true, completion: nil)
+            }
+            
+            alertController.addAction(overwriteAction)
+            alertController.addAction(cancelAction)
+            
         }
     }
     

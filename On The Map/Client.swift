@@ -148,6 +148,43 @@ class Client: NSObject {
         
     }
     
+    func taskForParsePUTMethod(_ method: String, objectId: String, jsonBody: [String: AnyObject], completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        
+        let urlString = Constants.OTM.ParseBaseURL + method + objectId
+        let url = URL(string: urlString)!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
+        request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try! JSONSerialization.data(withJSONObject: jsonBody, options: .prettyPrinted)
+        }
+        
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            guard (error == nil) else {
+                print("There was an error with your Parse PUT request: \(error)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your request returned a status code other than 2xx!: \(response)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request!")
+                return
+            }
+            
+            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPUT)
+        }
+        task.resume()
+        return task
+    }
+    
     func taskForParsePOSTMethod(_ method: String, jsonBody: [String: AnyObject], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         let urlString = Constants.OTM.ParseBaseURL + method

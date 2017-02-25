@@ -107,6 +107,14 @@ extension Client {
                         completionHandler(false, "Could not POST Student Location.")
                     } else {
                         
+                        guard let objectId = JSONResult?[Constants.JSONResponseKeys.objectID] as? String else {
+                            print("Could not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
+                            return
+                        }
+                        
+                        UserData.objectId = objectId
+                        print(objectId)
+                        
                         completionHandler(true, "Success in parsing for the POST Method.")
                     }
                 }
@@ -114,6 +122,34 @@ extension Client {
         }
     }
     
+    func changeMyLocation( objectId: String, userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+        
+        let jsonBody: [String: AnyObject] = [
+            Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
+            Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
+            Constants.JSONBodyKeys.LastName: lastName as AnyObject,
+            Constants.JSONBodyKeys.MediaURL: mediaURL as AnyObject,
+            Constants.JSONBodyKeys.MapString: mapString as AnyObject
+        ]
+        
+        let _ = taskForParsePUTMethod(Constants.Methods.Location, objectId: UserData.objectId, jsonBody: jsonBody) { (JSONResult, error) in
+            
+            if let error = error {
+                print(error)
+                completionHandler(false, "Could not change your student location.")
+            } else {
+                print("Successfully changed your student location.")
+                
+                guard let jsonResult = JSONResult as? [String: AnyObject] else {
+                    print("No data was found")
+                    return
+                }
+                print(jsonResult)
+                
+                completionHandler(true, nil)
+            }
+        }
+    }
     func getPublicUserData(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let _ = taskForUdacityGETMethod(Constants.Methods.Users, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName) { (JSONResult, error) in
