@@ -88,61 +88,85 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
     
     func postStudentLocation(_ completionHandler: @escaping (_ success: Bool) -> Void) {
         
-        performUIUpdatesOnMain {
+        self.setAnnotations()
             
-            self.setAnnotations()
-            
-            if UserData.objectId == "" {
-                Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+        if UserData.objectId == "" {
+            Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
-                    performUIUpdatesOnMain {
+                performUIUpdatesOnMain {
                         
                     
-                        if success {
-                            
-                            Client.sharedInstance().getStudentLocations() { (results, error) in
+                    if success {
+                        
+                        /*
+                        Client.sharedInstance().getStudentLocations() { (results, error) in
                                 
+                            if results != nil {
+                                    
+                                print("Success in posting new Student Location and getting other student locations")
+                                completionHandler(true)
+                            } else {
+                                completionHandler(false)
+                            }
+                        }*/
+                        completionHandler(true)
+                                
+                    } else {
+                        print("Failed to POST: \(errorString)")
+                        self.errorAlert(errorString)
+                    }
+                    
+                    Client.sharedInstance().getStudentLocations() { (results, error) in
+                        
+                        performUIUpdatesOnMain {
+                            
+                            if results != nil {
+                                
+                                print("Success in posting new Student Location and getting other student locations")
+                                completionHandler(true)
+                            } else {
+                                self.errorAlert("Not able to get student locations")
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+                
+            // Call PUT Method Here
+            Client.sharedInstance().changeMyLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                performUIUpdatesOnMain {
+                    
+                    if success {
+                        completionHandler(true)
+                        print("Success in changing your student location")
+                        /*
+                        Client.sharedInstance().getStudentLocations() { (results, error) in
+                                
+                            performUIUpdatesOnMain {
+                                    
                                 if results != nil {
                                     
                                     print("Success in posting new Student Location and getting other student locations")
                                     completionHandler(true)
-                                } else {
-                                    completionHandler(false)
                                 }
                             }
-                                
-                        } else {
-                            print("Failed to POST: \(errorString)")
-                            self.errorAlert(errorString)
-                        }
+                        }*/
+                            
+                    } else {
+                        self.errorAlert(errorString!)
+                        completionHandler(false)
                     }
-                }
-            } else {
-                
-                // Call PUT Method Here
-                Client.sharedInstance().changeMyLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
-                    
-                    performUIUpdatesOnMain {
-                    
-                        if success {
-                            completionHandler(true)
-                            print("Success in changing your student location")
+                    Client.sharedInstance().getStudentLocations() { (results, error) in
+                        
+                        performUIUpdatesOnMain {
                             
-                            Client.sharedInstance().getStudentLocations() { (results, error) in
+                            if results != nil {
                                 
-                                performUIUpdatesOnMain {
-                                    
-                                    if results != nil {
-                                    
-                                        print("Success in posting new Student Location and getting other student locations")
-                                        completionHandler(true)
-                                    }
-                                }
+                                print("Success in posting new Student Location and getting other student locations")
+                                completionHandler(true)
                             }
-                            
-                        } else {
-                            self.errorAlert(errorString!)
-                            completionHandler(false)
                         }
                     }
                 }

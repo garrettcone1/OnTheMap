@@ -60,25 +60,32 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         } else {
             
-            let message = "User '\(UserData.firstName + " " + UserData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
+            performUIUpdatesOnMain {
+                
             
-            let alertController = UIAlertController()
-            alertController.title = ""
-            alertController.message = message
+                let message = "User '\(UserData.firstName + " " + UserData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
             
-            let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default) { (action) in
+                let alertController = UIAlertController()
+                alertController.title = ""
+                alertController.message = message
+            
+                let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default) { (action) in
+                
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                    self.present(controller, animated: true, completion: nil)
+                }
+            
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { (action) in
+                
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+            
+                alertController.addAction(overwriteAction)
+                alertController.addAction(cancelAction)
                 
                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
                 self.present(controller, animated: true, completion: nil)
             }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { (action) in
-                
-                alertController.dismiss(animated: true, completion: nil)
-            }
-            
-            alertController.addAction(overwriteAction)
-            alertController.addAction(cancelAction)
             
         }
     }
