@@ -79,7 +79,7 @@ extension Client {
         }
     }
     
-    func postNewStudentLocation( userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
+    func postNewStudentLocation(objectId: String, userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
         
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(mapString) { (placemarks, error) -> Void in
@@ -91,6 +91,7 @@ extension Client {
                 let longitude = coordinates.longitude
                 
                 let jsonBody: [String: AnyObject] = [
+                    Constants.JSONBodyKeys.objectId: objectId as AnyObject,
                     Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
                     Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
                     Constants.JSONBodyKeys.LastName: lastName as AnyObject,
@@ -113,7 +114,7 @@ extension Client {
                         }
                         
                         UserData.objectId = objectId
-                        print(objectId)
+                        print("ObjectId: \(objectId)")
                         
                         completionHandler(true, "Success in parsing for the POST Method.")
                     }

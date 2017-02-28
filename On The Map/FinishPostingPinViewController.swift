@@ -91,7 +91,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         self.setAnnotations()
             
         if UserData.objectId == "" {
-            Client.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+            Client.sharedInstance().postNewStudentLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
                 performUIUpdatesOnMain {
                         

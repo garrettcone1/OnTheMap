@@ -68,6 +68,7 @@ struct Constants {
         static let password = "password"
         static let account = "account"
         
+        static let objectId = "objectId"
         static let uniqueKey = "uniqueKey"
         static let FirstName = "firstName"
         static let LastName = "lastName"
