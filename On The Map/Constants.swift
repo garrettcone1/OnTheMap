@@ -36,7 +36,7 @@ struct Constants {
     struct Methods {
         
         // GETing or POSTing a location
-        static let Location = "StudentLocation/"
+        static let Location = "StudentLocation"
         
         // Udacity Authentication
         static let Session = "session"
@@ -59,7 +59,7 @@ struct Constants {
         static let limit = "limit"
         static let skip = "skip"
         static let order = "order"
-        
+        static let queryWhere = "where"
     }
     
     struct JSONBodyKeys {

@@ -21,13 +21,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         self.activityIndicator.isHidden = true
         
-        getMapLocations()
+        //getMapLocations()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        getMapLocations()
+        
+    }
+    
     
     @IBAction func logOutButton(_ sender: Any) {
         
         
-        Client.sharedInstance().goLogout() { (success, errorString) in
+        UdacityClientAPI.sharedInstance().goLogout() { (success, errorString) in
             performUIUpdatesOnMain {
                 
                 if (success) {
@@ -91,17 +99,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
         }
     }
-    
+
+    // MARK: - Move this to Convenience.swift
+    func getMyStudentLocation() {
+        
+    }
     
     func getMapLocations() {
         
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
         
-        Client.sharedInstance().getStudentLocations() { (results, errorString) in
+        ParseClientAPI.sharedInstance().getStudentLocations() { (results, errorString) in
             
             performUIUpdatesOnMain {
                 if (results != nil) {
+                    
+                    print("In getMapLocations(), results: \(results!)")
                     
                     self.setMapLocations()
                     self.activityIndicator.stopAnimating()
@@ -128,10 +142,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let long = CLLocationDegrees(location.longitude as Double)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
+            /*
             if location.uniqueKey == UserData.userId {
                 UserData.objectId = location.objectId
-            }
+            }*/
             
             let first = location.firstName as String
             let last = location.lastName as String

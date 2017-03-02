@@ -15,4 +15,5 @@ struct UserData {
     static var lastName: String = ""
     static var userId: String = ""
     static var objectId: String = ""
+    static var uniqueKey: String = ""
 }

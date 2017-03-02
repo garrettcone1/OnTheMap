@@ -5,6 +5,22 @@
 //  Created by Garrett Cone on 1/20/17.
 //  Copyright © 2017 Garrett Cone. All rights reserved.
 //
+//
+// MARK: - BIG TODO LIST
+/*
+ 1) Create two separate API Client classes: 
+    UdacityClientAPI,
+        UdacityClientConstants
+        UdacityClientConvenience
+    ParseClientAPI
+        ParseClientConstants
+        ParseClientConvenience
+ 2) Implement getMyParseObjectID() in PostingPinViewController -- you to get your Parse Object ID if it exists and update your userData.objectId
+        getMyParseObjectID() will call getMyStudentLocation()
+ 3) Implement getMyStudentLocation() in ParseClientConvenience
+ */
+
+
 
 import Foundation
 import UIKit
@@ -57,7 +73,7 @@ class LoginViewController: UIViewController {
             self.activityIndicator.isHidden = false
             self.activityIndicator.startAnimating()
             
-            Client.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
+            UdacityClientAPI.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
                 performUIUpdatesOnMain {
                     if success {

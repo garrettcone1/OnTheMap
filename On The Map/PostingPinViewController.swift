@@ -30,6 +30,48 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         self.enterWebsiteTextField.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // MARK: - TODO: call getMyParseObjectID() (defined in the REVISED/new??? Convenience.swift) to verify if I have existing in parse
+        // UserData.objectId = passed in objectId if it exists; otherwise, it is ""
+        //  getMyParseObjectID() will call getMyStudentLocation() 
+        
+        // NOTE: if UserData.objectId == "", use POST
+        //          else. use PUT (will need userData.objectId in URL)
+        
+        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: UserData.uniqueKey) { (success, errorString) in
+        
+            if UserData.objectId == "" {
+                
+                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                    performUIUpdatesOnMain {
+                        
+                        
+                        if success {
+                            print("Success in posting our new student location")
+                            
+                        } else {
+                            print("Failed to POST: \(errorString)")
+                        }
+                    }
+                
+                }
+            } else {
+            
+                ParseClientAPI.sharedInstance().changeMyLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL:     LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                    if success {
+                        print("Success in changing(PUTing) our location")
+                    } else {
+                        print("Failed to PUT: \(errorString)")
+                    }
+                }
+            }
+        }
+    }
+    
     @IBAction func cancelAction(_ sender: Any) {
         
         self.dismiss(animated: true, completion: nil)

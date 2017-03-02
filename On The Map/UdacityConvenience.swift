@@ -1,16 +1,15 @@
 //
-//  Convenience.swift
+//  UdacityConvenience.swift
 //  On The Map
 //
-//  Created by Garrett Cone on 1/26/17.
+//  Created by Garrett Cone on 2/28/17.
 //  Copyright © 2017 Garrett Cone. All rights reserved.
 //
 
 import Foundation
 import UIKit
-import MapKit
 
-extension Client {
+extension UdacityClientAPI {
     
     func authenticateWithViewController(_ username: String?, password: String?, hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
@@ -79,82 +78,10 @@ extension Client {
         }
     }
     
-    func postNewStudentLocation(objectId: String, userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String) -> Void) {
-        
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(mapString) { (placemarks, error) -> Void in
-            
-            if let placemark = placemarks?.first {
-            
-                let coordinates: CLLocationCoordinate2D = (placemark.location!.coordinate)
-                let latitude = coordinates.latitude
-                let longitude = coordinates.longitude
-                
-                let jsonBody: [String: AnyObject] = [
-                    Constants.JSONBodyKeys.objectId: objectId as AnyObject,
-                    Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
-                    Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
-                    Constants.JSONBodyKeys.LastName: lastName as AnyObject,
-                    Constants.JSONBodyKeys.Latitude: latitude as AnyObject,
-                    Constants.JSONBodyKeys.Longitude: longitude as AnyObject,
-                    Constants.JSONBodyKeys.MediaURL: mediaURL as AnyObject,
-                    Constants.JSONBodyKeys.MapString: mapString as AnyObject
-                ]
-                
-                let _ = self.taskForParsePOSTMethod(Constants.Methods.Location, jsonBody: jsonBody) { (JSONResult, error) in
-                    
-                    if let error = error {
-                        print(error)
-                        completionHandler(false, "Could not POST Student Location.")
-                    } else {
-                        
-                        guard let objectId = JSONResult?[Constants.JSONResponseKeys.objectID] as? String else {
-                            print("Could not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
-                            return
-                        }
-                        
-                        UserData.objectId = objectId
-                        print("ObjectId: \(objectId)")
-                        
-                        completionHandler(true, "Success in parsing for the POST Method.")
-                    }
-                }
-            }
-        }
-    }
-    
-    func changeMyLocation( objectId: String, userID: String, firstName: String, lastName: String, mediaURL: String, mapString: String, _ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
-        
-        let jsonBody: [String: AnyObject] = [
-            Constants.JSONBodyKeys.uniqueKey: userID as AnyObject,
-            Constants.JSONBodyKeys.FirstName: firstName as AnyObject,
-            Constants.JSONBodyKeys.LastName: lastName as AnyObject,
-            Constants.JSONBodyKeys.MediaURL: mediaURL as AnyObject,
-            Constants.JSONBodyKeys.MapString: mapString as AnyObject
-        ]
-        
-        let _ = taskForParsePUTMethod(Constants.Methods.Location, objectId: UserData.objectId, jsonBody: jsonBody) { (JSONResult, error) in
-            
-            if let error = error {
-                print(error)
-                completionHandler(false, "Could not change your student location.")
-            } else {
-                print("Successfully changed your student location.")
-                
-                guard let jsonResult = JSONResult as? [String: AnyObject] else {
-                    print("No data was found")
-                    return
-                }
-                print(jsonResult)
-                
-                completionHandler(true, nil)
-            }
-        }
-    }
     func getPublicUserData(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let _ = taskForUdacityGETMethod(Constants.Methods.Users, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName) { (JSONResult, error) in
-        
+            
             if let error = error {
                 print(error)
                 completionHandler(false, "Could not get user data.")
@@ -192,37 +119,12 @@ extension Client {
             }
         }
     }
-    
-    func getStudentLocations(_ completionHandler: @escaping (_ results: [StudentLocation]?, _ errorString: String?) -> Void) {
-        
-        let parameters: [String: AnyObject] = [
-            Constants.OTMParameterKeys.limit: 100 as AnyObject,
-            Constants.OTMParameterKeys.skip: 400 as AnyObject,
-            Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
-        ]
- 
-        let _ = taskForParseGETMethod(Constants.Methods.Location, parameters: parameters) { (JSONResult, error) in
-            
-            if let error = error {
-                print(error)
-                completionHandler(nil, "Could not get student locations")
-            } else {
-                // Return the locations result, otherwise let us know that there were no results in the output
-                if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
-                    StudentArray.sharedInstance.myArray = StudentLocation.locationsFromResults(locations)
-                    completionHandler(StudentArray.sharedInstance.myArray, nil)
-                } else {
-                    completionHandler(nil, "JSONResult was empty")
-                }
-            }
-        }
-    }
-    
+
     func goLogout(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let url = Constants.OTM.logOutBaseURL + Constants.Methods.ToDelete
         let _ = taskForDELETEMethod(url) { (JSONResult, error) in
-        
+            
             if let error = error {
                 print(error)
                 completionHandler(false, "Logout Failed")
@@ -232,10 +134,6 @@ extension Client {
             }
         }
     }
-    
-}
-    
-    
-    
-    
 
+
+}

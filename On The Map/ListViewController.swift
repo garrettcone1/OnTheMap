@@ -63,7 +63,7 @@ class ListViewController: UITableViewController {
     func getStudentLocations() {
         
         
-        Client.sharedInstance().getStudentLocations() { (results, errorString) in
+        ParseClientAPI.sharedInstance().getStudentLocations() { (results, errorString) in
             
             performUIUpdatesOnMain {
                 if (results != nil) {
@@ -79,7 +79,7 @@ class ListViewController: UITableViewController {
     
     @IBAction func logOutButton(_ sender: Any) {
         
-        Client.sharedInstance().goLogout() { (success, errorString) in
+        UdacityClientAPI.sharedInstance().goLogout() { (success, errorString) in
             performUIUpdatesOnMain {
                 
                 if (success) {

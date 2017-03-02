@@ -89,12 +89,17 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
     func postStudentLocation(_ completionHandler: @escaping (_ success: Bool) -> Void) {
         
         self.setAnnotations()
-            
+        
+        print("\nIn postStudentLocation, before calling postNewStudentLocation...")
+        print("Success above")
+        completionHandler(true)
+        //print("\tUserData: \(UserData)")
+        /*
         if UserData.objectId == "" {
-            Client.sharedInstance().postNewStudentLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+            ParseClientAPI.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
                 performUIUpdatesOnMain {
-                        
+                    
                     
                     if success {
                         
@@ -116,7 +121,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                         self.errorAlert(errorString)
                     }
                     
-                    Client.sharedInstance().getStudentLocations() { (results, error) in
+                    ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
                         
                         performUIUpdatesOnMain {
                             
@@ -134,7 +139,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         } else {
                 
             // Call PUT Method Here
-            Client.sharedInstance().changeMyLocation(objectId: UserData.objectId, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+            ParseClientAPI.sharedInstance().changeMyLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                     
                 performUIUpdatesOnMain {
                     
@@ -158,7 +163,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                         self.errorAlert(errorString!)
                         completionHandler(false)
                     }
-                    Client.sharedInstance().getStudentLocations() { (results, error) in
+                    ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
                         
                         performUIUpdatesOnMain {
                             
@@ -171,7 +176,7 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                     }
                 }
             }
-        }
+        }*/
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
