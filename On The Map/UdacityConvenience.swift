@@ -97,7 +97,7 @@ extension UdacityClientAPI {
                     return
                 }
                 print("Passed GET userID: \(userID)")
-                
+                UserData.userId = userID
                 
                 guard let firstName = user[Constants.JSONResponseKeys.first_Name] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(JSONResult)")

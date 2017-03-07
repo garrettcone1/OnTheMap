@@ -138,24 +138,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let long = CLLocationDegrees(location.longitude as Double)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
             /*
             if location.uniqueKey == UserData.userId {
-                UserData.objectId = location.objectId
+                UserData.objectId = location.uniqueKey
             }*/
             
             let first = location.firstName as String
             let last = location.lastName as String
             let mediaURL = location.mediaURL as String
-            /*
-            if first == UserData.firstName {
-                UserData.firstName = location.firstName
-            }
-            if last == UserData.lastName {
-                UserData.lastName = location.lastName
-            }
-            if mediaURL == LocationData.enteredWebsite {
-                LocationData.enteredWebsite = location.mediaURL
-            }*/
+            
+            
             // Create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
