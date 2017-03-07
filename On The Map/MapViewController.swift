@@ -65,7 +65,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         if UserData.objectId == "" {
         
             performUIUpdatesOnMain {
-                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
                 self.present(controller, animated: true, completion: nil)
             }
         } else {
@@ -81,7 +81,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
                 let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default) { (action) in
                 
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
                     self.present(controller, animated: true, completion: nil)
                 }
             
@@ -93,17 +93,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 alertController.addAction(overwriteAction)
                 alertController.addAction(cancelAction)
                 
-                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
                 self.present(controller, animated: true, completion: nil)
             }
             
         }
     }
 
-    // MARK: - Move this to Convenience.swift
-    func getMyStudentLocation() {
-        
-    }
     
     func getMapLocations() {
         

@@ -45,7 +45,8 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
             
                 if (success) {
                     
-                    self.dismiss(animated: true, completion: nil)
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
+                    self.present(controller, animated: true, completion: nil)
                 } else {
                     
                     // Add an alert message here
@@ -91,11 +92,12 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         self.setAnnotations()
         
         print("\nIn postStudentLocation, before calling postNewStudentLocation...")
-        print("Success above")
+        
         completionHandler(true)
         //print("\tUserData: \(UserData)")
-        /*
+        
         if UserData.objectId == "" {
+            
             ParseClientAPI.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                 
                 performUIUpdatesOnMain {
@@ -103,37 +105,41 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                     
                     if success {
                         
-                        /*
-                        Client.sharedInstance().getStudentLocations() { (results, error) in
-                                
-                            if results != nil {
-                                    
-                                print("Success in posting new Student Location and getting other student locations")
+                        
+                        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: UserData.userId) { (success, error) in
+                            
+                            if success {
+                                print("Successfully POSTed and got your location.")
                                 completionHandler(true)
                             } else {
+                                print("Could not get your location: \(error)")
                                 completionHandler(false)
                             }
-                        }*/
+                        }
+                        
+                        ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
+                            
+                            performUIUpdatesOnMain {
+                                
+                                if results != nil {
+                                    
+                                    print("Success in posting new Student Location and getting other student locations")
+                                    completionHandler(true)
+                                } else {
+                                    self.errorAlert("Not able to get student locations")
+                                    completionHandler(false)
+                                }
+                            }
+                        }
+                        
                         completionHandler(true)
                                 
                     } else {
                         print("Failed to POST: \(errorString)")
+                        completionHandler(false)
                         self.errorAlert(errorString)
                     }
                     
-                    ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
-                        
-                        performUIUpdatesOnMain {
-                            
-                            if results != nil {
-                                
-                                print("Success in posting new Student Location and getting other student locations")
-                                completionHandler(true)
-                            } else {
-                                self.errorAlert("Not able to get student locations")
-                            }
-                        }
-                    }
                 }
             }
         } else {
@@ -144,39 +150,51 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                 performUIUpdatesOnMain {
                     
                     if success {
-                        completionHandler(true)
-                        print("Success in changing your student location")
-                        /*
-                        Client.sharedInstance().getStudentLocations() { (results, error) in
-                                
+                        
+                        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: UserData.userId) { (sucess, error) in
+                            
+                            if success {
+                                print("Successfully got your location.")
+                                completionHandler(true)
+                            } else {
+                                print("Could not get your location: \(error)")
+                                completionHandler(false)
+                            }
+                        }
+                        
+                        ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
+                            
                             performUIUpdatesOnMain {
-                                    
+                                
                                 if results != nil {
                                     
                                     print("Success in posting new Student Location and getting other student locations")
                                     completionHandler(true)
+                                } else {
+                                    self.errorAlert("Not able to get student locations")
+                                    completionHandler(false)
                                 }
                             }
-                        }*/
-                            
-                    } else {
-                        self.errorAlert(errorString!)
-                        completionHandler(false)
-                    }
-                    ParseClientAPI.sharedInstance().getStudentLocations() { (results, error) in
-                        
-                        performUIUpdatesOnMain {
-                            
-                            if results != nil {
-                                
-                                print("Success in posting new Student Location and getting other student locations")
-                                completionHandler(true)
-                            }
                         }
+                        
+                        completionHandler(true)
+                        print("Success in changing your student location")
+                    } else {
+                        print("Failed to PUT: \(errorString)")
+                        completionHandler(false)
+                        self.errorAlert(errorString!)
+                        
                     }
+                    
                 }
             }
-        }*/
+        }
+    }
+    
+    
+    
+    @IBAction func cancelAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

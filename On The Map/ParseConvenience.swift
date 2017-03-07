@@ -100,13 +100,14 @@ extension ParseClientAPI {
                 completionHandler(false, "Could not get objectID")
             } else {
                 
-                guard let uniqueKey = JSONResult?[Constants.JSONResponseKeys.uniqueKey] as? String else {
+                /*guard let uniqueKey = JSONResult?[Constants.JSONResponseKeys.uniqueKey] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.uniqueKey)' in \(JSONResult)")
                     return
                 }
                 
                 UserData.uniqueKey = uniqueKey
                 print("\nIn getMyParseObjectID, Success in getting my uniqueKey: \(uniqueKey)")
+                */
                 
                 guard let objectId = JSONResult?[Constants.JSONResponseKeys.objectID] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")

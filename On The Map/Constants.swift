@@ -28,6 +28,8 @@ struct Constants {
         static let ParseHost = "parse.udacity.com"
         static let ParsePath = "/parse/classes/"
         
+        static let queryValue = "1234"
+        
         static let UdacityBaseURL = "https://www.udacity.com/api/"
         static let logOutBaseURL = "https://www.udacity.com/api/"
         static let signUpURL = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"

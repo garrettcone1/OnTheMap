@@ -96,7 +96,7 @@ class ListViewController: UITableViewController {
     @IBAction func addOrChangePin(_ sender: Any) {
         
         performUIUpdatesOnMain {
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingPinNavController")
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
             self.present(controller, animated: true, completion: nil)
         }
     }

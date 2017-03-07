@@ -32,15 +32,15 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // MARK: - TODO: call getMyParseObjectID() (defined in the REVISED/new??? Convenience.swift) to verify if I have existing in parse
         // UserData.objectId = passed in objectId if it exists; otherwise, it is ""
         //  getMyParseObjectID() will call getMyStudentLocation() 
         
         // NOTE: if UserData.objectId == "", use POST
         //          else. use PUT (will need userData.objectId in URL)
-        
-        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: UserData.uniqueKey) { (success, errorString) in
+        /*
+        ParseClientAPI.sharedInstance().getMyParseObjectID() { (success, errorString) in
         
             if UserData.objectId == "" {
                 
@@ -69,11 +69,10 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-        }
+        }*/
     }
     
     @IBAction func cancelAction(_ sender: Any) {
-        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -95,7 +94,8 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                 if (success) {
                     print("Successfully set your location data")
                     
-                    self.performSegue(withIdentifier: "lastSegue", sender: nil)
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "FinishPostingPinViewController")
+                    self.present(controller, animated: true, completion: nil)
                     
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.isHidden = true

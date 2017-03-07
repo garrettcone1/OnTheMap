@@ -66,6 +66,7 @@ class ParseClientAPI: NSObject {
         let request = NSMutableURLRequest(url: url)
         */
         // CHECK IF THIS URL IS CORRECT (MAY BE IMPLEMENTING UNIQUEKEY WRONG OR STUDENTLOCATION METHOD HAS "/" AT THE END)
+        
         let request = NSMutableURLRequest(url: parseURLFromParameters(parameters, withPathExtension: method))
         request.httpMethod = "GET"
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
