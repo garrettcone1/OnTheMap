@@ -41,12 +41,19 @@ extension ParseClientAPI {
                         completionHandler(false, "Could not POST Student Location.")
                     } else {
                         
+                        // Add createdAt
+                        guard let createdAt = JSONResult?[Constants.JSONResponseKeys.CreatedAt] as? String else {
+                            print("Could not find key: '\(Constants.JSONResponseKeys.CreatedAt)' in \(JSONResult)")
+                            return
+                        }
+                        print("\nIn postNewStudentLocation, Successful posting of my location: CreatedAt: \(createdAt)")
+                        
                         guard let objectId = JSONResult?[Constants.JSONResponseKeys.objectID] as? String else {
                             print("Could not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
                             return
                         }
                         
-                        UserData.objectId = objectId
+                        userData.objectId = objectId
                         print("\nIn postNewStudentLocation, Successful posting of my location: ObjectId: \(objectId)")
                         
                         completionHandler(true, "Success in parsing for the POST Method.")
@@ -66,7 +73,7 @@ extension ParseClientAPI {
             Constants.JSONBodyKeys.MapString: mapString as AnyObject
         ]
         
-        let _ = taskForParsePUTMethod(Constants.Methods.Location, objectId: UserData.objectId, jsonBody: jsonBody) { (JSONResult, error) in
+        let _ = taskForParsePUTMethod(Constants.Methods.LocationWithSlash, objectId: userData.objectId, jsonBody: jsonBody) { (JSONResult, error) in
             
             if let error = error {
                 print(error)
@@ -78,6 +85,9 @@ extension ParseClientAPI {
                     print("No data was found")
                     return
                 }
+                
+                // Add updatedAt
+                
                 print(jsonResult)
                 
                 completionHandler(true, nil)
@@ -93,30 +103,44 @@ extension ParseClientAPI {
             Constants.OTMParameterKeys.queryWhere: uniqueKey as AnyObject
         ]
         
+        print("\nIn ParseClientAPI.getMyParseObjectID()...")
+        
         let _ = getStudentLocationFromParse(Constants.Methods.Location, parameters: parameters) { (JSONResult, error) in
             
             if let error = error {
-                print(error)
+                print("\t\(error)")
                 completionHandler(false, "Could not get objectID")
             } else {
                 
-                guard let uniqueKey = JSONResult?[Constants.JSONResponseKeys.uniqueKey] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.uniqueKey)' in \(JSONResult)")
+                // MARK: TODO get the value of JSONResult["results"] which is an array of dictionaries => [[String:AnyObject]] => myStudentLocationsArray
+                //
+                
+                guard let results = JSONResult?["results"] as? [[String: AnyObject]] else {
+                    print("\tCould not find results dictionary.")
                     return
                 }
                 
-                UserData.uniqueKey = uniqueKey
-                print("\nIn getMyParseObjectID, Success in getting my uniqueKey: \(uniqueKey)")
- 
+                let myStudentLocation = results[results.count-1]
+                print("\nIn ParseClientAPI.getMyParseObjectID() ...")
+                print("\tmyStudentLocation: \(myStudentLocation)")
                 
-                guard let objectId = JSONResult?[Constants.JSONResponseKeys.objectID] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
+                /*guard let uniqueKey = myStudentLocation[Constants.JSONResponseKeys.uniqueKey] as? String else {
+                    print("\t???Could not find key???: '\(Constants.JSONResponseKeys.uniqueKey)' in \(JSONResult)")
+                    return
+                }
+                
+                userData.uniqueKey = uniqueKey
+                print("\tSuccess in getting my uniqueKey: \(uniqueKey)")
+                */
+                
+                guard let objectId = myStudentLocation[Constants.JSONResponseKeys.objectID] as? String else {
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
                     return
                 }
 
-                UserData.objectId = objectId
-                print("\nIn getMyParseObjectID, Success in getting my objectId: \(objectId)")
-                completionHandler(true, "Success in parsing for the GET Method.")
+                userData.objectId = objectId
+                print("\tSuccess in getting my objectId: \(objectId)")
+                completionHandler(true, "")
             }
         }
     }

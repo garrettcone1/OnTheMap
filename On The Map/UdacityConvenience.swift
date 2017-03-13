@@ -32,6 +32,8 @@ extension UdacityClientAPI {
         
         let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Session
         
+        print("\nIn UdacityClientAPI.postSessionID() ...")
+        
         let _ = taskForUdacityPOSTMethod(url, parameters: parameters as [String: [String : AnyObject]]) { (JSONResult, error) in
             
             if let error = error {
@@ -40,37 +42,37 @@ extension UdacityClientAPI {
             } else {
                 
                 guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult)")
                     return
                 }
-                print("Passed session: \(session)")
+                print("\tPassed session: \(session)")
                 
                 guard let sessionID = session[Constants.JSONResponseKeys.sessionID] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session)")
                     return
                 }
-                print("Passed sessionID: \(sessionID)")
+                print("\tPassed sessionID: \(sessionID)")
                 
                 guard let account = JSONResult?[Constants.JSONResponseKeys.account] as? [String: AnyObject] else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult)")
                     return
                 }
-                print("Passed account: \(account)")
+                print("\tPassed account: \(account)")
                 
                 guard let key = account[Constants.JSONResponseKeys.key] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.key)' in \(account)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.key)' in \(account)")
                     return
                 }
-                print("Passed account key: \(key)")
+                print("\tPassed account key: \(key)")
                 
-                UserData.userId = key
+                userData.userId = key
                 
                 self.getPublicUserData() { (success, error) in
                     
                     if (success) {
-                        print("Successfully got user data")
+                        print("\tSuccessfully got user data")
                     } else {
-                        print("Could not get user data: \(error!)")
+                        print("\tCould not get user data: \(error!)")
                     }
                 }
                 completionHandler(true, nil)
@@ -80,40 +82,42 @@ extension UdacityClientAPI {
     
     func getPublicUserData(_ completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
-        let _ = taskForUdacityGETMethod(Constants.Methods.Users, userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName) { (JSONResult, error) in
-            
+       let _ = taskForUdacityGETMethod(Constants.Methods.Users, userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName) { (JSONResult, error) in
+        
+            print("\nIn UdacityClientAPI.getPublicUserData() ...")
+        
             if let error = error {
-                print(error)
+                print("\terror: \(error)")
                 completionHandler(false, "Could not get user data.")
             } else {
                 
                 guard let user = JSONResult?[Constants.JSONResponseKeys.user] as? [String: AnyObject] else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.user)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.user)' in \(JSONResult)")
                     return
                 }
                 
                 guard let userID = user[Constants.JSONResponseKeys.userIdKey] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.userIdKey)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.userIdKey)' in \(JSONResult)")
                     return
                 }
-                print("Passed GET userID: \(userID)")
-                UserData.userId = userID
+                print("\tPassed GET userID: \(userID)")
+                userData.userId = userID
                 
                 guard let firstName = user[Constants.JSONResponseKeys.first_Name] as? String else {
-                    print("Could not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.first_Name)' in \(JSONResult)")
                     return
                 }
-                print("Passed GET firstName: \(firstName)")
+                print("\tPassed GET firstName: \(firstName)")
                 
-                UserData.firstName = firstName
+                userData.firstName = firstName
                 
                 guard let lastName = user[Constants.JSONResponseKeys.last_Name] as? String else {
                     print("Could not find key: '\(Constants.JSONResponseKeys.last_Name)' in \(JSONResult)")
                     return
                 }
-                print("Passed GET lastName: \(lastName)")
+                print("\tPassed GET lastName: \(lastName)")
                 
-                UserData.lastName = lastName
+                userData.lastName = lastName
                 
                 completionHandler(true, nil)
             }

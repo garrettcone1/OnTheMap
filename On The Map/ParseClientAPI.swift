@@ -67,6 +67,8 @@ class ParseClientAPI: NSObject {
         */
         // CHECK IF THIS URL IS CORRECT (MAY BE IMPLEMENTING UNIQUEKEY WRONG OR STUDENTLOCATION METHOD HAS "/" AT THE END)
         
+        print("\nIn ParseClientAPI.getStudentLocationFromParse() ...")
+        print("\t url: \(parseURLFromParameters(parameters, withPathExtension: method))")
         let request = NSMutableURLRequest(url: parseURLFromParameters(parameters, withPathExtension: method))
         request.httpMethod = "GET"
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
@@ -75,17 +77,17 @@ class ParseClientAPI: NSObject {
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
             guard (error == nil) else {
-                print("There was an error with your Parse POST request: \(error)")
+                print("\tThere was an error with your Parse POST request: \(error!)")
                 return
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx!: \(response)")
+                print("\tYour request returned a status code other than 2xx!: \(response!)")
                 return
             }
             
             guard let data = data else {
-                print("No data was returned by the request!")
+                print("\tNo data was returned by the request!")
                 return
             }
             
@@ -136,7 +138,8 @@ class ParseClientAPI: NSObject {
     
     func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
-        let request = NSMutableURLRequest(url: parseURLFromParameters(parameters, withPathExtension: method))
+        print("\t url: \(parseURLFromParametersForGET(parameters, withPathExtension: method))")
+        let request = NSMutableURLRequest(url: parseURLFromParametersForGET(parameters, withPathExtension: method))
         request.addValue(Constants.OTM.ParseApplicationID, forHTTPHeaderField: Constants.OTMParameterKeys.ApplicationID)
         request.addValue(Constants.OTM.ParseApiKey, forHTTPHeaderField: Constants.OTMParameterKeys.ApiKey)
         
@@ -176,8 +179,26 @@ class ParseClientAPI: NSObject {
         
         completionHandlerForConvertData(parsedResult, nil)
     }
-    
+    // Parse method for getStudentLocationFromParse()
     private func parseURLFromParameters(_ parameters: [String: AnyObject], withPathExtension: String? = nil) -> URL {
+        
+        var components = URLComponents()
+        components.scheme = Constants.OTM.ParseScheme
+        components.host = Constants.OTM.ParseHost
+        components.path = Constants.OTM.ParsePath + (withPathExtension ?? "")
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            
+            let queryItem = URLQueryItem(name: key, value: "{\"uniqueKey\":\"\(value)\"}") // {"uniqueKey":"1234"}
+            components.queryItems!.append(queryItem)
+        }
+        
+        return components.url!
+    }
+    
+    // Parse method for taskForParseGETMethod()
+    private func parseURLFromParametersForGET(_ parameters: [String: AnyObject], withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
         components.scheme = Constants.OTM.ParseScheme

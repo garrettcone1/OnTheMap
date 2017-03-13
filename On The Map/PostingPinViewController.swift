@@ -34,17 +34,17 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
 
         // MARK: - TODO: call getMyParseObjectID() (defined in the REVISED/new??? Convenience.swift) to verify if I have existing in parse
-        // UserData.objectId = passed in objectId if it exists; otherwise, it is ""
+        // userData.objectId = passed in objectId if it exists; otherwise, it is ""
         //  getMyParseObjectID() will call getMyStudentLocation() 
         
-        // NOTE: if UserData.objectId == "", use POST
+        // NOTE: if userData.objectId == "", use POST
         //          else. use PUT (will need userData.objectId in URL)
-        /*
-        ParseClientAPI.sharedInstance().getMyParseObjectID() { (success, errorString) in
         
-            if UserData.objectId == "" {
+        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, errorString) in
+        
+            if userData.objectId == "" {
                 
-                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                     
                     performUIUpdatesOnMain {
                         
@@ -60,7 +60,7 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
             
-                ParseClientAPI.sharedInstance().changeMyLocation(userID: UserData.userId, firstName: UserData.firstName, lastName: UserData.lastName, mediaURL:     LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
                     
                     if success {
                         print("Success in changing(PUTing) our location")
@@ -69,7 +69,7 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-        }*/
+        }
     }
     
     @IBAction func cancelAction(_ sender: Any) {

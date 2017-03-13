@@ -39,7 +39,7 @@ struct Constants {
         
         // GETing or POSTing a location
         static let Location = "StudentLocation"
-        
+        static let LocationWithSlash = "StudentLocation/"
         // Udacity Authentication
         static let Session = "session"
         

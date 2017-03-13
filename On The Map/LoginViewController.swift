@@ -77,8 +77,8 @@ class LoginViewController: UIViewController {
                 
                 performUIUpdatesOnMain {
                     if success {
-                        
-                        print("Successful Authentication")
+                        print("\nIn LoginViewController.loginPressed() ...")
+                        print("\tSuccessful Authentication")
                         self.completeLogin()
                         
                         self.activityIndicator.stopAnimating()

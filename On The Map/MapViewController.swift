@@ -21,7 +21,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         self.activityIndicator.isHidden = true
         
-        //getMapLocations()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,7 +32,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     
     @IBAction func logOutButton(_ sender: Any) {
-        
         
         UdacityClientAPI.sharedInstance().goLogout() { (success, errorString) in
             performUIUpdatesOnMain {
@@ -47,8 +45,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 }
             }
         }
-        
-        
     }
     
     @IBAction func reloadButton(_ sender: Any) {
@@ -62,7 +58,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func addOrChangePin(_ sender: Any) {
         
-        if UserData.objectId == "" {
+        if userData.objectId == "" {
         
             performUIUpdatesOnMain {
                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
@@ -71,9 +67,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         } else {
             
             performUIUpdatesOnMain {
-                
             
-                let message = "User '\(UserData.firstName + " " + UserData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
+                let message = "User '\(userData.firstName + " " + userData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
             
                 let alertController = UIAlertController()
                 alertController.title = ""
@@ -96,10 +91,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
                 self.present(controller, animated: true, completion: nil)
             }
-            
         }
     }
-
     
     func getMapLocations() {
         
@@ -140,8 +133,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
             /*
-            if location.uniqueKey == UserData.userId {
-                UserData.objectId = location.uniqueKey
+            if location.uniqueKey == userData.userId {
+                userData.objectId = location.uniqueKey
             }*/
             
             let first = location.firstName as String

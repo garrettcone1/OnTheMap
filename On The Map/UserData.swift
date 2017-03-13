@@ -11,9 +11,12 @@ import UIKit
 
 struct UserData {
     
-    static var firstName: String = ""
-    static var lastName: String = ""
-    static var userId: String = ""
-    static var objectId: String = ""
-    static var uniqueKey: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
+    var userId: String = ""
+    var objectId: String = ""
+    var uniqueKey: String = ""
+    
 }
+
+var userData = UserData()
