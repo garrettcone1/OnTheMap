@@ -113,7 +113,7 @@ extension ParseClientAPI {
             } else {
                 
                 // MARK: TODO get the value of JSONResult["results"] which is an array of dictionaries => [[String:AnyObject]] => myStudentLocationsArray
-                //
+                
                 
                 guard let results = JSONResult?["results"] as? [[String: AnyObject]] else {
                     print("\tCould not find results dictionary.")

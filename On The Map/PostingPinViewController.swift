@@ -40,36 +40,36 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         // NOTE: if userData.objectId == "", use POST
         //          else. use PUT (will need userData.objectId in URL)
         
-        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, errorString) in
-        
-            if userData.objectId == "" {
-                
-                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
-                    
-                    performUIUpdatesOnMain {
-                        
-                        
-                        if success {
-                            print("Success in posting our new student location")
-                            
-                        } else {
-                            print("Failed to POST: \(errorString)")
-                        }
-                    }
-                
-                }
-            } else {
-            
-                ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
-                    
-                    if success {
-                        print("Success in changing(PUTing) our location")
-                    } else {
-                        print("Failed to PUT: \(errorString)")
-                    }
-                }
-            }
-        }
+//        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, errorString) in
+//        
+//            if userData.objectId == "" {
+//                
+//                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+//                    
+//                    performUIUpdatesOnMain {
+//                        
+//                        
+//                        if success {
+//                            print("Success in posting our new student location")
+//                            
+//                        } else {
+//                            print("Failed to POST: \(errorString)")
+//                        }
+//                    }
+//                
+//                }
+//            } else {
+//            
+//                ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+//                    
+//                    if success {
+//                        print("Success in changing(PUTing) our location")
+//                    } else {
+//                        print("Failed to PUT: \(errorString)")
+//                    }
+//                }
+//            }
+//        }
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -107,8 +107,6 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     func getMyLocation(completionHandler: @escaping (_ success: Bool) -> Void) {
         
-        
-            
             let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(LocationData.enteredLocation!) { (placemark, error) in
                 

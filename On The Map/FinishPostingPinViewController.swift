@@ -100,39 +100,96 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         print("\nIn postStudentLocation...")
         print("\tuserData: \(userData)")
         
-        if userData.objectId == "" {
+        ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, errorString) in
             
-            ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+            if userData.objectId == "" {
                 
-                if success {
-                    print("Successfully POSTed your location.")
-                    completionHandler(true)
-                    ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, error) in
+                ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                    performUIUpdatesOnMain {
+                        
                         
                         if success {
-                            print("Successfully POSTed and got your location.")
                             completionHandler(true)
+                            
+                            // If successful, go on to the next view
+                            let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
+                            self.present(controller, animated: true, completion: nil)
+                            
+                            print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
+                            print("\tSuccessful POSTing new student location")
+                            
                         } else {
-                            print("Could not get your location: \(error)")
                             completionHandler(false)
+                            print("Failed to POST: \(errorString)")
+                            
+                            self.dismiss(animated: true, completion: nil)
+                            
                         }
                     }
                     
-                    // If successful, go on to the next view
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
-                    self.present(controller, animated: true, completion: nil)
-                    
-                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
-                    print("\tSuccessful POSTing new student location")
-                } else {
-                    // If failed, dismiss the view
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
-                    print("\tFailed to POST new student location: \(errorString)")
-                    
                 }
+            } else {
                 
+                ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+                    
+                    if success {
+                        completionHandler(true)
+                        
+                        // If successful, go on to the next view
+                        let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
+                        self.present(controller, animated: true, completion: nil)
+                        
+                        print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
+                        print("\tSuccessful PUTing new student location")
+
+                    } else {
+                        completionHandler(false)
+                        print("Failed to PUT: \(errorString)")
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    }
+                }
+            }
+        }
+
+        
+        
+//        if userData.objectId == "" {
+//            
+//            ParseClientAPI.sharedInstance().postNewStudentLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+//                
+//                if success {
+//                    print("Successfully POSTed your location.")
+//                    completionHandler(true)
+//                    ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, error) in
+//                        
+//                        if success {
+//                            print("Successfully POSTed and got your location.")
+//                            completionHandler(true)
+//                        } else {
+//                            print("Could not get your location: \(error)")
+//                            completionHandler(false)
+//                        }
+//                    }
+//                    
+//                    // If successful, go on to the next view
+//                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
+//                    self.present(controller, animated: true, completion: nil)
+//                    
+//                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
+//                    print("\tSuccessful POSTing new student location")
+//                } else {
+//                    // If failed, dismiss the view
+//                    self.dismiss(animated: true, completion: nil)
+//                    
+//                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
+//                    print("\tFailed to POST new student location: \(errorString)")
+//                    
+//                }
+        
+        
+        //KEEP COMMENTED
 //                performUIUpdatesOnMain {
 //                    
 //                    
@@ -174,41 +231,42 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
 //                    }
 //                    
 //                }
-            }
-        } else {
+            //}
+        //} else {
                 
             // Call PUT Method Here
-            ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
-                
-                
-                if success {
-                    
-                    ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, error) in
-                        
-                        if success {
-                            print("Successfully POSTed and got your location.")
-                            completionHandler(true)
-                        } else {
-                            print("Could not get your location: \(error)")
-                            completionHandler(false)
-                        }
-                    }
-                    
-                    // If successful, go on to the next view
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
-                    self.present(controller, animated: true, completion: nil)
-                    
-                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
-                    print("\tSuccessful PUTing new student location")
-                } else {
-                    // If failed, dismiss the view
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
-                    print("\tFailed to PUT new student location: \(errorString)")
-                    
-                }
-                
+//            ParseClientAPI.sharedInstance().changeMyLocation(userID: userData.userId, firstName: userData.firstName, lastName: userData.lastName, mediaURL: LocationData.enteredWebsite, mapString: LocationData.enteredLocation) { (success, errorString) in
+//                
+//                
+//                if success {
+//                    
+//                    ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, error) in
+//                        
+//                        if success {
+//                            print("Successfully POSTed and got your location.")
+//                            completionHandler(true)
+//                        } else {
+//                            print("Could not get your location: \(error)")
+//                            completionHandler(false)
+//                        }
+//                    }
+//                    
+//                    // If successful, go on to the next view
+//                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
+//                    self.present(controller, animated: true, completion: nil)
+//                    
+//                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
+//                    print("\tSuccessful PUTing new student location")
+//                } else {
+//                    // If failed, dismiss the view
+//                    self.dismiss(animated: true, completion: nil)
+//                    
+//                    print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
+//                    print("\tFailed to PUT new student location: \(errorString)")
+//                    
+//                }
+            
+            // KEEP COMMENTED
 //                performUIUpdatesOnMain {
 //                    
 //                    if success {
@@ -249,8 +307,8 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
 //                    }
 //                    
 //                }
-            }
-        }
+            //}
+        //}
     }
     
     
