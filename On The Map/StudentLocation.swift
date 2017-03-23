@@ -23,7 +23,7 @@ struct StudentLocation {
     var objectId: String = ""
     var uniqueKey: String = ""
     var updatedAt: String = ""
-    
+   
     init(dictionary: [String : AnyObject]) {
         
         if let createdAt = dictionary[Constants.JSONResponseKeys.CreatedAt] as? String {
@@ -66,6 +66,10 @@ struct StudentLocation {
             self.updatedAt = updatedAt
         }
     }
+    
+}
+
+extension StudentLocation {
     
     // Convert an array of dictionaries to an array of student information struct objects
     static func locationsFromResults(_ results: [[String : AnyObject]]) -> [StudentLocation] {

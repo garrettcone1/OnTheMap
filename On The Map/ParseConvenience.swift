@@ -162,6 +162,7 @@ extension ParseClientAPI {
                 // Return the locations result, otherwise let us know that there were no results in the output
                 if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
                     StudentArray.sharedInstance.myArray = StudentLocation.locationsFromResults(locations)
+                    //parseStudentLocations.studentLocations = locations
                     completionHandler(StudentArray.sharedInstance.myArray, nil)
                 } else {
                     completionHandler(nil, "JSONResult was empty")

@@ -119,6 +119,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    // TEST FUNCTION TO SEE IF THIS DIFFERENT WAY WILL WORK, IF NOT, USE FUNCTION BELOW
+//    func setMapLocations() {
+//        
+//        //let locations = parseStudentLocations.studentLocations
+//        let locations = StudentArray.sharedInstance.myArray
+//        var annotations = [MKPointAnnotation]()
+//        
+//        for location in locations {
+//            
+//            let lat = CLLocationDegrees(location.latitude )
+//            let long = CLLocationDegrees(location.longitude )
+//            
+//            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+//            
+//            let first = location.firstName
+//            let last = location.lastName
+//            let mediaURL = location.mediaURL
+//            
+//            let annotation = MKPointAnnotation()
+//            annotation.coordinate = coordinate
+//            annotation.title = "\(first) \(last)"
+//            annotation.subtitle = mediaURL
+//            
+//            annotations.append(annotation)
+//        }
+//        
+//        self.mapView.delegate = self
+//        self.mapView.addAnnotations(annotations)
+//    }
     func setMapLocations() {
         
         let locations = StudentArray.sharedInstance.myArray

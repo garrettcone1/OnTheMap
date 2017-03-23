@@ -22,8 +22,6 @@ class StudentArray {
     
     var myArray: [StudentLocation] = [StudentLocation]()
     
-    //var studentLocation: StudentLocation!
-    
     static func locationsFromResults(_ results: [[String: AnyObject]]) -> [StudentLocation] {
         
         var studentLocations = [StudentLocation]()
@@ -33,6 +31,7 @@ class StudentArray {
         
         return studentLocations
     }
+    
 }
 
 
