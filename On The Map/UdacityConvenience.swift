@@ -38,6 +38,7 @@ extension UdacityClientAPI {
             
             if let error = error {
                 
+                
                 completionHandler(false, error.domain)
             } else {
                 
@@ -55,6 +56,7 @@ extension UdacityClientAPI {
                 
                 guard let account = JSONResult?[Constants.JSONResponseKeys.account] as? [String: AnyObject] else {
                     print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult)")
+                    //self.errorAlert("Invalid Login Credentials")
                     return
                 }
                 print("\tPassed account: \(account)")
@@ -139,5 +141,20 @@ extension UdacityClientAPI {
         }
     }
 
+    func showAlert(alertmessage: String) {
+        let alertController = UIAlertController(title: "Login Error!", message: alertmessage as String, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+            action in alertController.dismiss(animated: true, completion: nil)
+            
+        }
+        alertController.addAction(okAction)
+        alertController.present(alertController, animated: true, completion: nil)
+    }
+    
+    func errorAlert(_ errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        alertController.present(alertController, animated: true, completion: nil)
+    }
 
 }

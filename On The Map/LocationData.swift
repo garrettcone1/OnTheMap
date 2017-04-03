@@ -19,7 +19,3 @@ struct LocationData {
     
 }
 
-struct parseStudentLocations {
-    
-    static var studentLocations: [[String: AnyObject]]!
-}

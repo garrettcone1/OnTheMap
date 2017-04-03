@@ -43,7 +43,6 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let locationInfo = StudentArray.sharedInstance.myArray[indexPath.row]
-        
         let locationToLoad = locationInfo.mediaURL
         
         if locationToLoad.range(of: "http") != nil {
@@ -52,11 +51,20 @@ class ListViewController: UITableViewController {
             
                 if (success) {
                     print("URL successfully opened!")
+                } else {
+                    performUIUpdatesOnMain {
+                        print("URL could not be loaded.")
+                        self.errorAlert("Invalid link: Requires 'http://' in URL.")
+                    }
                 }
             }
             
         } else {
-            print("Invalid link")
+            performUIUpdatesOnMain {
+            
+                print("Invalid link")
+                self.errorAlert("Invalid link: Requires 'http://' in URL.")
+            }
         }
     }
     
@@ -95,10 +103,39 @@ class ListViewController: UITableViewController {
     
     @IBAction func addOrChangePin(_ sender: Any) {
         
-        performUIUpdatesOnMain {
+        if userData.objectId == "" {
+            
+            print("In addOrChangePin(), userData.objectId was nil")
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
             self.present(controller, animated: true, completion: nil)
+            
+        } else {
+            
+            performUIUpdatesOnMain {
+                print("In addOrChangePin(), userData.objectId was NOT nil")
+                let message = "User '\(userData.firstName + " " + userData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
+                
+                let alertController = UIAlertController()
+                alertController.title = ""
+                alertController.message = message
+                
+                let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default) { (action) in
+                    
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
+                    self.present(controller, animated: true, completion: nil)
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { (action) in
+                    
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+                
+                alertController.addAction(overwriteAction)
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
+
     }
     
     

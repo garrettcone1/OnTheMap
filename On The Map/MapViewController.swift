@@ -27,9 +27,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewWillAppear(animated)
         
         getMapLocations()
-        
     }
-    
     
     @IBAction func logOutButton(_ sender: Any) {
         
@@ -60,14 +58,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         if userData.objectId == "" {
         
-            performUIUpdatesOnMain {
-                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
-                self.present(controller, animated: true, completion: nil)
-            }
+            print("In addOrChangePin(), userData.objectId was nil")
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
+            self.present(controller, animated: true, completion: nil)
+            
         } else {
             
             performUIUpdatesOnMain {
-            
+                print("In addOrChangePin(), userData.objectId was NOT nil")
                 let message = "User '\(userData.firstName + " " + userData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
             
                 let alertController = UIAlertController()
@@ -87,9 +85,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
                 alertController.addAction(overwriteAction)
                 alertController.addAction(cancelAction)
-                
-                let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
-                self.present(controller, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -119,35 +115,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // TEST FUNCTION TO SEE IF THIS DIFFERENT WAY WILL WORK, IF NOT, USE FUNCTION BELOW
-//    func setMapLocations() {
-//        
-//        //let locations = parseStudentLocations.studentLocations
-//        let locations = StudentArray.sharedInstance.myArray
-//        var annotations = [MKPointAnnotation]()
-//        
-//        for location in locations {
-//            
-//            let lat = CLLocationDegrees(location.latitude )
-//            let long = CLLocationDegrees(location.longitude )
-//            
-//            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-//            
-//            let first = location.firstName
-//            let last = location.lastName
-//            let mediaURL = location.mediaURL
-//            
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = coordinate
-//            annotation.title = "\(first) \(last)"
-//            annotation.subtitle = mediaURL
-//            
-//            annotations.append(annotation)
-//        }
-//        
-//        self.mapView.delegate = self
-//        self.mapView.addAnnotations(annotations)
-//    }
     func setMapLocations() {
         
         let locations = StudentArray.sharedInstance.myArray
@@ -160,11 +127,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let long = CLLocationDegrees(location.longitude as Double)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            /*
-            if location.uniqueKey == userData.userId {
-                userData.objectId = location.uniqueKey
-            }*/
             
             let first = location.firstName as String
             let last = location.lastName as String

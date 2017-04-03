@@ -60,12 +60,6 @@ class ParseClientAPI: NSObject {
     // to be called in getMyParseObjectID() in the NEW/Revised ParseClientConvenience.swift - which will need the ObjectId
     
     func getStudentLocationFromParse(_ method: String, parameters: [String: AnyObject], _ completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-        /*
-        let urlString = Constants.OTM.ParseBaseURL + method // add "?where={"uniqueKey":"1234"}" -- use URLComponents
-        let url = URL(string: urlString)!
-        let request = NSMutableURLRequest(url: url)
-        */
-        // CHECK IF THIS URL IS CORRECT (MAY BE IMPLEMENTING UNIQUEKEY WRONG OR STUDENTLOCATION METHOD HAS "/" AT THE END)
         
         print("\nIn ParseClientAPI.getStudentLocationFromParse() ...")
         print("\t url: \(parseURLFromParameters(parameters, withPathExtension: method))")

@@ -86,8 +86,6 @@ extension ParseClientAPI {
                     return
                 }
                 
-                // Add updatedAt
-                
                 print(jsonResult)
                 
                 completionHandler(true, nil)
@@ -112,9 +110,6 @@ extension ParseClientAPI {
                 completionHandler(false, "Could not get objectID")
             } else {
                 
-                // MARK: TODO get the value of JSONResult["results"] which is an array of dictionaries => [[String:AnyObject]] => myStudentLocationsArray
-                
-                
                 guard let results = JSONResult?["results"] as? [[String: AnyObject]] else {
                     print("\tCould not find results dictionary.")
                     return
@@ -123,15 +118,6 @@ extension ParseClientAPI {
                 let myStudentLocation = results[results.count-1]
                 print("\nIn ParseClientAPI.getMyParseObjectID() ...")
                 print("\tmyStudentLocation: \(myStudentLocation)")
-                
-                /*guard let uniqueKey = myStudentLocation[Constants.JSONResponseKeys.uniqueKey] as? String else {
-                    print("\t???Could not find key???: '\(Constants.JSONResponseKeys.uniqueKey)' in \(JSONResult)")
-                    return
-                }
-                
-                userData.uniqueKey = uniqueKey
-                print("\tSuccess in getting my uniqueKey: \(uniqueKey)")
-                */
                 
                 guard let objectId = myStudentLocation[Constants.JSONResponseKeys.objectID] as? String else {
                     print("\tCould not find key: '\(Constants.JSONResponseKeys.objectID)' in \(JSONResult)")
@@ -162,7 +148,7 @@ extension ParseClientAPI {
                 // Return the locations result, otherwise let us know that there were no results in the output
                 if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
                     StudentArray.sharedInstance.myArray = StudentLocation.locationsFromResults(locations)
-                    //parseStudentLocations.studentLocations = locations
+                    
                     completionHandler(StudentArray.sharedInstance.myArray, nil)
                 } else {
                     completionHandler(nil, "JSONResult was empty")
