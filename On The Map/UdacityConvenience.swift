@@ -13,14 +13,18 @@ extension UdacityClientAPI {
     
     func authenticateWithViewController(_ username: String?, password: String?, hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
-        self.postSessionID(username, password) { (success, errorString) in
+        
             
-            if success {
-                completionHandlerForAuth(success, errorString)
-            } else {
-                completionHandlerForAuth(success, errorString)
+        
+            self.postSessionID(username, password) { (success, errorString) in
+            
+                if success == true {
+                    completionHandlerForAuth(success, errorString)
+                } else {
+                    completionHandlerForAuth(success, errorString)
+                }
             }
-        }
+        
     }
     
     func postSessionID(_ username: String?, _ password: String?, completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
@@ -28,7 +32,7 @@ extension UdacityClientAPI {
         let parameters: [String: [String: AnyObject]] = [Constants.JSONBodyKeys.udacity : [
             Constants.JSONBodyKeys.username: username as AnyObject,
             Constants.JSONBodyKeys.password: password as AnyObject
-            ]]
+        ]]
         
         let url = Constants.OTM.UdacityBaseURL + Constants.Methods.Session
         
@@ -38,31 +42,37 @@ extension UdacityClientAPI {
             
             if let error = error {
                 
-                
                 completionHandler(false, error.domain)
             } else {
                 
                 guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult). Error: \(error).")
+                    completionHandler(false, "Missing Session Details")
                     return
                 }
                 print("\tPassed session: \(session)")
                 
                 guard let sessionID = session[Constants.JSONResponseKeys.sessionID] as? String else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session). Error: \(error).")
+                    completionHandler(false, "Not able to get Session Id")
                     return
                 }
                 print("\tPassed sessionID: \(sessionID)")
                 
                 guard let account = JSONResult?[Constants.JSONResponseKeys.account] as? [String: AnyObject] else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult)")
-                    //self.errorAlert("Invalid Login Credentials")
+                    
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult). Error: \(error).")
+                    print("Invalid Login Credentials")
+                    completionHandler(false, "Invalid Login Credentials")
+                    //self.showAlert(alertmessage: "Invalid Login Credentials")
+                    
                     return
                 }
                 print("\tPassed account: \(account)")
                 
                 guard let key = account[Constants.JSONResponseKeys.key] as? String else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.key)' in \(account)")
+                    print("\tCould not find key: '\(Constants.JSONResponseKeys.key)' in \(account). Error: \(error).")
+                    completionHandler(false, "Missing User Id")
                     return
                 }
                 print("\tPassed account key: \(key)")
@@ -77,7 +87,7 @@ extension UdacityClientAPI {
                         print("\tCould not get user data: \(error!)")
                     }
                 }
-                completionHandler(true, nil)
+                completionHandler(true, "Invalid Login Credentials")
             }
         }
     }
@@ -143,9 +153,8 @@ extension UdacityClientAPI {
 
     func showAlert(alertmessage: String) {
         let alertController = UIAlertController(title: "Login Error!", message: alertmessage as String, preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
-            action in alertController.dismiss(animated: true, completion: nil)
-            
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { action in
+            alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(okAction)
         alertController.present(alertController, animated: true, completion: nil)

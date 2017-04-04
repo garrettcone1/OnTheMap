@@ -42,12 +42,12 @@ class UdacityClientAPI: NSObject {
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx!")
+                print("Your request returned a status code other than 2xx! \(response)")
                 return
             }
             
             guard let data = data else {
-                print("No data was returned by the request!")
+                print("No data was returned by the request: \(error)")
                 return
             }
             
@@ -62,12 +62,9 @@ class UdacityClientAPI: NSObject {
         
         task.resume()
         return task
-        
     }
 
     func taskForUdacityGETMethod(_ method: String, userID: String, firstName: String, lastName: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-        
-        
         
         let urlString = Constants.OTM.UdacityBaseURL + method + userID
         let url = URL(string: urlString)

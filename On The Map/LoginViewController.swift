@@ -54,17 +54,19 @@ class LoginViewController: UIViewController {
             
             UdacityClientAPI.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
-                performUIUpdatesOnMain {
-                    if success {
-                        print("\nIn LoginViewController.loginPressed() ...")
-                        print("\tSuccessful Authentication")
-                        self.completeLogin()
+                if success == true {
+                    print("\nIn LoginViewController.loginPressed() ...")
+                    print("\tSuccessful Authentication")
+                    self.completeLogin()
                         
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                } else {
+                    performUIUpdatesOnMain {
+                        
+                        self.errorAlert(errorString!)
                         self.activityIndicator.stopAnimating()
                         self.activityIndicator.isHidden = true
-                    } else {
-                        self.errorAlert(errorString!)
-                        
                     }
                 }
             }
@@ -93,18 +95,22 @@ class LoginViewController: UIViewController {
         }
     }
     
-    
+    func errorAlert(_ errorString: String) {
+        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension LoginViewController: UITextFieldDelegate {
     
     // MARK: UITextFieldDelegate
     
-    func errorAlert(_ errorString: String) {
-        let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
-    }
+    //func errorAlert(_ errorString: String) {
+     //   let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
+     //   alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+     //   self.present(alertController, animated: true, completion: nil)
+    //}
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
