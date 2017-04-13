@@ -40,53 +40,61 @@ extension UdacityClientAPI {
         
         let _ = taskForUdacityPOSTMethod(url, parameters: parameters as [String: [String : AnyObject]]) { (JSONResult, error) in
             
-            if let error = error {
+            guard let error = error else {
                 
-                completionHandler(false, error.domain)
-            } else {
+                completionHandler(false, "Could not login")
+                return
+            }
                 
-                guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult). Error: \(error).")
-                    completionHandler(false, "Missing Session Details")
-                    return
-                }
-                print("\tPassed session: \(session)")
+            guard let checkError = JSONResult?["error"] as? [String: AnyObject] else {
+                print("\tCould not find key: 'error' in \(JSONResult). Error: \(error).")
+                completionHandler(false, "Could not find error details")
+                return
+            }
+            print("\tPassed checkError: \(checkError)")
                 
-                guard let sessionID = session[Constants.JSONResponseKeys.sessionID] as? String else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session). Error: \(error).")
-                    completionHandler(false, "Not able to get Session Id")
-                    return
-                }
-                print("\tPassed sessionID: \(sessionID)")
+            guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
+                print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult). Error: \(error).")
+                completionHandler(false, "Missing Session Details")
+                return
+            }
+            print("\tPassed session: \(session)")
+            
+            guard let sessionID = session[Constants.JSONResponseKeys.sessionID] as? String else {
+                print("\tCould not find key: '\(Constants.JSONResponseKeys.sessionID)' in \(session). Error: \(error).")
+                completionHandler(false, "Not able to get Session Id")
+                return
+            }
+            print("\tPassed sessionID: \(sessionID)")
                 
-                guard let account = JSONResult?[Constants.JSONResponseKeys.account] as? [String: AnyObject] else {
+            guard let account = JSONResult?[Constants.JSONResponseKeys.account] as? [String: AnyObject] else {
+                
+                print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult). Error: \(error).")
+                print("Invalid Login Credentials")
+                completionHandler(false, "Invalid Login Credentials")
+                //self.showAlert(alertmessage: "Invalid Login Credentials")
+                
+                return
+            }
+            print("\tPassed account: \(account)")
+                
+            guard let key = account[Constants.JSONResponseKeys.key] as? String else {
+                print("\tCould not find key: '\(Constants.JSONResponseKeys.key)' in \(account). Error: \(error).")
+                completionHandler(false, "Missing User Id")
+                return
+            }
+            print("\tPassed account key: \(key)")
+                
+            userData.userId = key
+                
+            self.getPublicUserData() { (success, error) in
                     
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.account)' in \(JSONResult). Error: \(error).")
-                    print("Invalid Login Credentials")
-                    completionHandler(false, "Invalid Login Credentials")
-                    //self.showAlert(alertmessage: "Invalid Login Credentials")
+                if (success) {
+                    print("\tSuccessfully got user data")
+                } else {
+                    print("\tCould not get user data: \(error!)")
+                }
                     
-                    return
-                }
-                print("\tPassed account: \(account)")
-                
-                guard let key = account[Constants.JSONResponseKeys.key] as? String else {
-                    print("\tCould not find key: '\(Constants.JSONResponseKeys.key)' in \(account). Error: \(error).")
-                    completionHandler(false, "Missing User Id")
-                    return
-                }
-                print("\tPassed account key: \(key)")
-                
-                userData.userId = key
-                
-                self.getPublicUserData() { (success, error) in
-                    
-                    if (success) {
-                        print("\tSuccessfully got user data")
-                    } else {
-                        print("\tCould not get user data: \(error!)")
-                    }
-                }
                 completionHandler(true, "Invalid Login Credentials")
             }
         }
