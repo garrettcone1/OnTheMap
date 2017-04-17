@@ -38,17 +38,13 @@ class UdacityClientAPI: NSObject {
             
             guard (error == nil) else {
                 print("There was an error with your Udacity POST request: \(error)")
-                return
-            }
-            
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx! \(response)")
-                
+                completionHandlerForPOST(nil, error! as NSError)
                 return
             }
             
             guard let data = data else {
                 print("No data was returned by the request: \(error)")
+                completionHandlerForPOST(nil, error! as NSError)
                 return
             }
             
@@ -57,7 +53,26 @@ class UdacityClientAPI: NSObject {
             let newData = data.subdata(in: range)
             print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
             
-            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
+            var parsedResult: AnyObject!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as AnyObject
+            } catch let error as NSError {
+                completionHandlerForPOST(nil, error)
+                return
+            }
+            
+            if let errorString = parsedResult["error"] as? String {
+                print(errorString)
+                //completionHandlerForPOST(nil, error! as NSError)
+                
+                return
+            }
+            
+            completionHandlerForPOST(parsedResult, nil)
+            
+            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
+            
+            // Check for Server error here !!!
             
         }
         
@@ -166,4 +181,5 @@ class UdacityClientAPI: NSObject {
         }
         return Singleton.sharedInstance
     }
+    
 }

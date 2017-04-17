@@ -45,14 +45,7 @@ extension UdacityClientAPI {
                 completionHandler(false, "Could not login")
                 return
             }
-                
-            guard let checkError = JSONResult?["error"] as? [String: AnyObject] else {
-                print("\tCould not find key: 'error' in \(JSONResult). Error: \(error).")
-                completionHandler(false, "Could not find error details")
-                return
-            }
-            print("\tPassed checkError: \(checkError)")
-                
+             
             guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
                 print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult). Error: \(error).")
                 completionHandler(false, "Missing Session Details")
@@ -86,7 +79,7 @@ extension UdacityClientAPI {
             print("\tPassed account key: \(key)")
                 
             userData.userId = key
-                
+            
             self.getPublicUserData() { (success, error) in
                     
                 if (success) {
@@ -97,6 +90,9 @@ extension UdacityClientAPI {
                     
                 completionHandler(true, "Invalid Login Credentials")
             }
+            
+            completionHandler(true, "Successful Login")
+            
         }
     }
     
