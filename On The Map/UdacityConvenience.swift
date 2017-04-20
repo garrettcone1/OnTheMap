@@ -48,7 +48,7 @@ extension UdacityClientAPI {
              
             guard let session = JSONResult?[Constants.JSONResponseKeys.Session] as? [String: AnyObject] else {
                 print("\tCould not find key: '\(Constants.JSONResponseKeys.Session)' in \(JSONResult). Error: \(error).")
-                completionHandler(false, "Missing Session Details")
+                completionHandler(false, "Invalid Login Credentials")
                 return
             }
             print("\tPassed session: \(session)")

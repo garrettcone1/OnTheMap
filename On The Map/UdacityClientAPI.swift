@@ -63,14 +63,17 @@ class UdacityClientAPI: NSObject {
             
             if let errorString = parsedResult["error"] as? String {
                 print(errorString)
-                //completionHandlerForPOST(nil, error! as NSError)
+                
+                let errorStr = "Invalid login credentials"
+                let error = NSError(domain: errorStr, code: 0, userInfo: [NSLocalizedDescriptionKey: errorString])
+                
+                
+                completionHandlerForPOST(nil, error as NSError)
                 
                 return
             }
             
             completionHandlerForPOST(parsedResult, nil)
-            
-            //self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
             
             // Check for Server error here !!!
             
