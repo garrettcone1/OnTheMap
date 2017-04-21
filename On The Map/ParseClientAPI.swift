@@ -56,9 +56,6 @@ class ParseClientAPI: NSObject {
         return task
     }
     
-    // MARK: - TODO: Complete the function getStudentLocationFromParse
-    // to be called in getMyParseObjectID() in the NEW/Revised ParseClientConvenience.swift - which will need the ObjectId
-    
     func getStudentLocationFromParse(_ method: String, parameters: [String: AnyObject], _ completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         print("\nIn ParseClientAPI.getStudentLocationFromParse() ...")
@@ -127,7 +124,6 @@ class ParseClientAPI: NSObject {
         }
         task.resume()
         return task
-        
     }
     
     func taskForParseGETMethod(_ method: String, parameters: [String: AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
@@ -141,24 +137,44 @@ class ParseClientAPI: NSObject {
             
             guard (error == nil) else {
                 print("There was an error with your Udacity POST request: \(error)")
+                completionHandlerForGET(nil, error! as NSError)
                 return
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 print("Your request returned a status code other than 2xx!: \(response)")
+                completionHandlerForGET(nil, error! as NSError)
                 return
             }
             
             guard let data = data else {
                 print("No data was returned by the request!")
+                completionHandlerForGET(nil, error! as NSError)
                 return
             }
             
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+            var parsedResult: AnyObject!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+            } catch let error as NSError {
+                completionHandlerForGET(nil, error)
+                return
+            }
+            
+            if let errorString = parsedResult["error"] as? String {
+                print(errorString)
+                
+                let errorStr = "Not able to get Student Locations"
+                let error = NSError(domain: errorStr, code: 0, userInfo: [NSLocalizedDescriptionKey: errorString])
+                
+                completionHandlerForGET(nil, error as NSError)
+                return
+            }
+            
+            completionHandlerForGET(parsedResult, nil)
         }
         task.resume()
         return task
-        
     }
     
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
@@ -173,6 +189,7 @@ class ParseClientAPI: NSObject {
         
         completionHandlerForConvertData(parsedResult, nil)
     }
+    
     // Parse method for getStudentLocationFromParse()
     private func parseURLFromParameters(_ parameters: [String: AnyObject], withPathExtension: String? = nil) -> URL {
         
@@ -187,7 +204,6 @@ class ParseClientAPI: NSObject {
             let queryItem = URLQueryItem(name: key, value: "{\"uniqueKey\":\"\(value)\"}") // {"uniqueKey":"1234"}
             components.queryItems!.append(queryItem)
         }
-        
         return components.url!
     }
     
@@ -215,5 +231,4 @@ class ParseClientAPI: NSObject {
         }
         return Singleton.sharedInstance
     }
-
 }

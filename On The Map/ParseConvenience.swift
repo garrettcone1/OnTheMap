@@ -33,6 +33,7 @@ extension ParseClientAPI {
                     Constants.JSONBodyKeys.MediaURL: mediaURL as AnyObject,
                     Constants.JSONBodyKeys.MapString: mapString as AnyObject
                 ]
+                
                 print("\nIn postNewStudentLocation, jsonBody: \(jsonBody)")
                 let _ = self.taskForParsePOSTMethod(Constants.Methods.Location, jsonBody: jsonBody) { (JSONResult, error) in
                     
@@ -41,7 +42,6 @@ extension ParseClientAPI {
                         completionHandler(false, "Could not POST Student Location.")
                     } else {
                         
-                        // Add createdAt
                         guard let createdAt = JSONResult?[Constants.JSONResponseKeys.CreatedAt] as? String else {
                             print("Could not find key: '\(Constants.JSONResponseKeys.CreatedAt)' in \(JSONResult)")
                             return
@@ -101,8 +101,6 @@ extension ParseClientAPI {
             Constants.OTMParameterKeys.queryWhere: uniqueKey as AnyObject
         ]
         
-        print("\nIn ParseClientAPI.getMyParseObjectID()...")
-        
         let _ = getStudentLocationFromParse(Constants.Methods.Location, parameters: parameters) { (JSONResult, error) in
             
             if let error = error {
@@ -143,7 +141,7 @@ extension ParseClientAPI {
             
             if let error = error {
                 print(error)
-                completionHandler(nil, "Could not get student locations")
+                completionHandler(nil, error.localizedDescription)
             } else {
                 // Return the locations result, otherwise let us know that there were no results in the output
                 if let locations = JSONResult?[Constants.JSONResponseKeys.LocationResults] as? [[String: AnyObject]] {
@@ -151,7 +149,7 @@ extension ParseClientAPI {
                     
                     completionHandler(StudentArray.sharedInstance.myArray, nil)
                 } else {
-                    completionHandler(nil, "JSONResult was empty")
+                    completionHandler(nil, error?.localizedDescription)
                 }
             }
         }

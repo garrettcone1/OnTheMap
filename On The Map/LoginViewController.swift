@@ -55,7 +55,6 @@ class LoginViewController: UIViewController {
             UdacityClientAPI.sharedInstance().authenticateWithViewController(emailTextField.text!, password: passwordTextField.text!, hostViewController: self) { (success, errorString) in
                 
                 if success == true {
-                    print("\nIn LoginViewController.loginPressed() ...")
                     print("\tSuccessful Authentication")
                     self.completeLogin()
                         
@@ -65,6 +64,7 @@ class LoginViewController: UIViewController {
                     performUIUpdatesOnMain {
                         
                         self.errorAlert(errorString!)
+                        self.setUIEnabled(true)
                         self.activityIndicator.stopAnimating()
                         self.activityIndicator.isHidden = true
                     }
@@ -80,7 +80,6 @@ class LoginViewController: UIViewController {
             self.present(controller, animated: true, completion: nil)
         }
     }
-    
     
     @IBAction func signUpButton(_ sender: Any) {
         
@@ -104,14 +103,6 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: UITextFieldDelegate {
     
-    // MARK: UITextFieldDelegate
-    
-    //func errorAlert(_ errorString: String) {
-     //   let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
-     //   alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-     //   self.present(alertController, animated: true, completion: nil)
-    //}
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -125,7 +116,7 @@ private extension LoginViewController {
         passwordTextField.isEnabled = enabled
         loginButton.isEnabled = enabled
         
-        // adjust login button alpha
+        // Adjust login button alpha
         if enabled {
             loginButton.alpha = 1.0
         } else {

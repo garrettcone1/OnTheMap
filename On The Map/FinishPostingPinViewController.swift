@@ -24,7 +24,6 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         self.loadMap()
         
         self.mapView.delegate = self
-        
         finishButton.layer.cornerRadius = 5
         finishButton.clipsToBounds = true
     }
@@ -37,21 +36,19 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func finishPostingPin(_ sender: Any) {
         
-            
-            self.postStudentLocation() { (success) in
-            
-                if (success) {
-                    performUIUpdatesOnMain {
-                        print("Successfully finalized my location")
-                    }
-
-                } else {
-                    
-                    performUIUpdatesOnMain {
-                        print("Check your internet connection")
-                    }
+        self.postStudentLocation() { (success) in
+        
+            if (success) {
+                performUIUpdatesOnMain {
+                    print("Successfully finalized my location")
+                }
+            } else {
+                
+                performUIUpdatesOnMain {
+                    print("Check your internet connection")
                 }
             }
+        }
     }
     
     func loadMap() {
@@ -88,9 +85,6 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         
         self.setAnnotations()
         
-        print("\nIn postStudentLocation, before calling postNewStudentLocation...")
-        
-        print("\nIn postStudentLocation...")
         print("\tuserData: \(userData)")
         
         ParseClientAPI.sharedInstance().getMyParseObjectID(uniqueKey: userData.userId) { (success, errorString) in
@@ -101,15 +95,13 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                     
                     performUIUpdatesOnMain {
                         
-                        
                         if success {
                             completionHandler(true)
                             
                             // If successful, go on to the next view
                             let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
                             self.present(controller, animated: true, completion: nil)
-                            
-                            print("\tIn FinishPostingPinViewController.postStudentLocation after calling postNewStudentLocation ...")
+                           
                             print("\tSuccessful POSTing new student location")
                             
                         } else {
@@ -131,14 +123,12 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
                         let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationTabBarController") as! UITabBarController
                         self.present(controller, animated: true, completion: nil)
                         
-                        print("\tIn FinishPostingPinViewController.postStudentLocation after calling changeMyLocation ...")
                         print("\tSuccessful PUTing new student location")
 
                     } else {
                         completionHandler(false)
                         print("Failed to PUT: \(errorString)")
                         self.dismiss(animated: true, completion: nil)
-                        
                     }
                 }
             }
@@ -191,4 +181,3 @@ class FinishPostingPinViewController: UIViewController, MKMapViewDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
 }
-

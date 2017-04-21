@@ -21,24 +21,22 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         
-        self.activityIndicator.isHidden = true
-        // Rounds the corners of the buttons
+        activityIndicator.isHidden = true
+        // Round the corners of the buttons
         findLocationButton.layer.cornerRadius = 5
         findLocationButton.clipsToBounds = true
         
-        self.enterLocationTextField.delegate = self
-        self.enterWebsiteTextField.delegate = self
+        enterLocationTextField.delegate = self
+        enterWebsiteTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     @IBAction func cancelAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     @IBAction func findLocation(_ sender: Any) {
         
@@ -46,13 +44,13 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         LocationData.enteredWebsite = self.enterWebsiteTextField.text!
         
         if enterLocationTextField.text!.isEmpty || enterWebsiteTextField.text!.isEmpty {
-            self.errorAlert("Location or Website fields Empty")
+            errorAlert("Location or Website fields Empty")
         } else {
             
-            self.activityIndicator.isHidden = false
-            self.activityIndicator.startAnimating()
+            activityIndicator.isHidden = false
+            activityIndicator.startAnimating()
             
-            self.getMyLocation() { (success) in
+            getMyLocation() { (success, errorString) in
                 
                 if (success) {
                     print("Successfully set your location data")
@@ -62,13 +60,21 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                     
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.isHidden = true
+                } else {
+                    
+                    performUIUpdatesOnMain {
+                        self.setUIEnabled(false)
+                        self.errorAlert(errorString!)
+                        self.setUIEnabled(true)
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
+                    }
                 }
             }
-            
         }
     }
     
-    func getMyLocation(completionHandler: @escaping (_ success: Bool) -> Void) {
+    func getMyLocation(completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(LocationData.enteredLocation!) { (placemark, error) in
@@ -77,35 +83,36 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
                     
                 print(Thread.isMainThread)
                     
-                guard error == nil else {
+                if let error = error {
                     print("Could not geocode the entered location: \(error)")
+                    completionHandler(false, error.localizedDescription)
                     return
                 }
                 
                 guard let placemark = placemark else {
                     print("No placemarks found")
+                    completionHandler(false, error?.localizedDescription)
                     return
-                    
                 }
                 
                 guard let latitude = placemark[0].location?.coordinate.latitude else {
                     print("This latitude placemark is: \(placemark)")
+                    completionHandler(false, error?.localizedDescription)
                     return
                 }
                 
                 guard let longitude = placemark[0].location?.coordinate.longitude else {
                     print("This longitude placemark is: \(placemark)")
+                    completionHandler(false, error?.localizedDescription)
                     return
                 }
                 
                 LocationData.latitude = latitude
                 LocationData.longitude = longitude
-                    
-                    
                 print(latitude)
                 print(longitude)
                 
-                completionHandler(true)
+                completionHandler(true, nil)
             }
         }
     }
@@ -120,5 +127,18 @@ class PostingPinViewController: UIViewController, UITextFieldDelegate {
         let alertController = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func setUIEnabled(_ enabled: Bool) {
+        enterLocationTextField.isEnabled = enabled
+        enterWebsiteTextField.isEnabled = enabled
+        findLocationButton.isEnabled = enabled
+        
+        // adjust login button alpha
+        if enabled {
+            findLocationButton.alpha = 1.0
+        } else {
+            findLocationButton.alpha = 0.5
+        }
     }
 }

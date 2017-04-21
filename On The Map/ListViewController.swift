@@ -70,7 +70,6 @@ class ListViewController: UITableViewController {
     
     func getStudentLocations() {
         
-        
         ParseClientAPI.sharedInstance().getStudentLocations() { (results, errorString) in
             
             performUIUpdatesOnMain {
@@ -82,7 +81,6 @@ class ListViewController: UITableViewController {
                 }
             }
         }
-        
     }
     
     @IBAction func logOutButton(_ sender: Any) {
@@ -105,14 +103,13 @@ class ListViewController: UITableViewController {
         
         if userData.objectId == "" {
             
-            print("In addOrChangePin(), userData.objectId was nil")
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
             self.present(controller, animated: true, completion: nil)
             
         } else {
             
             performUIUpdatesOnMain {
-                print("In addOrChangePin(), userData.objectId was NOT nil")
+                
                 let message = "User '\(userData.firstName + " " + userData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
                 
                 let alertController = UIAlertController()
@@ -138,7 +135,6 @@ class ListViewController: UITableViewController {
 
     }
     
-    
     @IBAction func reloadButton(_ sender: Any) {
         
         getStudentLocations()
@@ -150,5 +146,4 @@ class ListViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    
 }

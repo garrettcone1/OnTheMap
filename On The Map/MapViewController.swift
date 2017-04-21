@@ -20,7 +20,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         self.activityIndicator.isHidden = true
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,14 +57,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         if userData.objectId == "" {
         
-            print("In addOrChangePin(), userData.objectId was nil")
             let controller = self.storyboard!.instantiateViewController(withIdentifier: "PostingNavController")
             self.present(controller, animated: true, completion: nil)
             
         } else {
             
             performUIUpdatesOnMain {
-                print("In addOrChangePin(), userData.objectId was NOT nil")
+                
                 let message = "User '\(userData.firstName + " " + userData.lastName)' has already posted a Student Location. Would you like to overwrite their location?"
             
                 let alertController = UIAlertController()
@@ -132,7 +130,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let last = location.lastName as String
             let mediaURL = location.mediaURL as String
             
-            
             // Create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
@@ -189,4 +186,3 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
 }
-
