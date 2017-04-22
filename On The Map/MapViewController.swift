@@ -25,6 +25,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        for annotation: MKAnnotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        
         getMapLocations()
     }
     

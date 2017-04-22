@@ -133,7 +133,6 @@ extension ParseClientAPI {
         
         let parameters: [String: AnyObject] = [
             Constants.OTMParameterKeys.limit: 100 as AnyObject,
-            Constants.OTMParameterKeys.skip: 400 as AnyObject,
             Constants.OTMParameterKeys.order: "-updatedAt" as AnyObject
         ]
         
