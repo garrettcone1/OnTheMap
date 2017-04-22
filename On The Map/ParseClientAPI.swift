@@ -141,8 +141,8 @@ class ParseClientAPI: NSObject {
                 return
             }
             
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx!: \(response)")
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 599 else {
+                print("Your request returned a status code with an error!: \(response)")
                 completionHandlerForGET(nil, error! as NSError)
                 return
             }

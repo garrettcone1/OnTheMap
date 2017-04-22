@@ -38,6 +38,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     
                 } else {
                     print("Log Out Failed")
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     self.errorAlert("Log Out Failed")
                 }
             }
@@ -107,6 +109,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     
                 } else {
                     print("Could not get student locations")
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     self.errorAlert(errorString!)
                 }
             }

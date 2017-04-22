@@ -37,6 +37,13 @@ class LoginViewController: UIViewController {
         self.passwordTextField.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
